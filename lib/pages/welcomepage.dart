@@ -3,7 +3,6 @@ import 'package:lottie/lottie.dart';
 import 'package:bouncing_button/bouncing_button.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'homepage.dart';
-import '../main.dart';
 
 class WelcomePage extends StatefulWidget {
   const WelcomePage({super.key});
