@@ -12,7 +12,7 @@ final llm =
     OpenAI(apiKey: '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');
 final chatModel = ChatOpenAI(
     apiKey: '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',
-    temperature: 0,
+    temperature: 0.5,
     model: 'gpt-3.5-turbo-1106');
 final embeddings = OpenAIEmbeddings(
   apiKey: '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',
@@ -219,7 +219,7 @@ class _QueryModelState extends State<QueryModel> {
     setState(() {
       lottiePath="assets/animations/loading.json";
     });
-    final prom="what is my name?";
+    final prom="as an AI bot you've to answer for all qestions and queries";
     final llmResponse = await chain.invoke(prom);
 
     print(llmResponse);
