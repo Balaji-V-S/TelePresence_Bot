@@ -3,8 +3,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
-import '../Services/NavDrawer.dart';
-import '../Services/SpeechToText.dart';
+import '../Services/Navdrawer.dart';
+import '../Services/SpeechtoText.dart';
 
 class MenuPage extends StatelessWidget {
   const MenuPage({super.key});

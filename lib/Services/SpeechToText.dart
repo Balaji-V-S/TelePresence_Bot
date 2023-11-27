@@ -156,7 +156,7 @@ final chain = Runnable.fromMap({
       'history': Runnable.fromFunction(
         (final _, final __) async {
           final m = await memory.loadMemoryVariables();
-          return m['history'];
+          return m;
         },
       ),
     }) |
@@ -219,12 +219,13 @@ class _QueryModelState extends State<QueryModel> {
     setState(() {
       lottiePath="assets/animations/loading.json";
     });
-    final llmResponse = await chain.invoke(prompt);
+    final prom="what is my name?";
+    final llmResponse = await chain.invoke(prom);
 
-    print(prompt + ":" + llmResponse);
+    print(llmResponse);
 
     await memory.saveContext(
-      inputValues: {'input': prompt},
+      inputValues: {'input': prom},
       outputValues: {'output': llmResponse},
     );
     print("Context Saved");
