@@ -54,7 +54,7 @@ class _WelcomePageState extends State<WelcomePage> {
                 ),
                 onPressed: () {
                   Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(builder: (_) => const MenuPage()));
+                      MaterialPageRoute(builder: (_) => MenuPage()));
                 }),
           ],
         ),

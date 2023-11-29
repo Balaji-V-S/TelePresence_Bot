@@ -1,5 +1,5 @@
 import 'dart:io';
-
+import 'AdsPage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
@@ -86,7 +86,7 @@ class MenuPage extends StatelessWidget {
                     ),
                     onTap: () {
                       Navigator.of(context)
-                          .push(MaterialPageRoute(builder: (_) => const QueryModel()));
+                          .push(MaterialPageRoute(builder: (_) => const AdBuilder()));
                     },
                   ),
                   const SizedBox(width: 20),
