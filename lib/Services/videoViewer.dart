@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:appinio_video_player/appinio_video_player.dart';
 
 class VideoViewer extends StatefulWidget {
-  VideoViewer({Key? key, required this.vdoPath}) : super(key: key);
+  const VideoViewer({Key? key, required this.vdoPath}) : super(key: key);
     final File vdoPath;
 
   @override
@@ -54,7 +54,7 @@ class _VideoViewerState extends State<VideoViewer> {
     setState(() {
       isLoading = true;
     });
-    VideoPlayerController _videoPlayerController =
+    VideoPlayerController videoPlayerController =
         VideoPlayerController.file(widget.vdoPath)
           ..initialize().then((value) {
             setState(() {
@@ -63,7 +63,7 @@ class _VideoViewerState extends State<VideoViewer> {
           });
 
     _customVideoPlayerController = CustomVideoPlayerController(
-        context: context, videoPlayerController: _videoPlayerController);
+        context: context, videoPlayerController: videoPlayerController);
   }
 }
 

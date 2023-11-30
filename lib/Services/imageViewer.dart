@@ -1,7 +1,5 @@
-import 'dart:io';
-
+import 'dart:io' show File;
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 
 class ImageViewer extends StatelessWidget {
   const ImageViewer({Key? key, required this.imgpath}) : super(key: key);
@@ -10,16 +8,18 @@ class ImageViewer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Center(
-      child: Container(
+      body: Center(
         child: InteractiveViewer(
           panEnabled: true, // Set it to false
           // boundaryMargin: EdgeInsets.all(100),
           minScale: 0.5,
           maxScale: 5,
-          child: Image.file(imgpath,fit: BoxFit.contain,),
+          child: Image.file(
+            imgpath,
+            fit: BoxFit.contain,
+          ),
         ),
       ),
-    ));
+    );
   }
 }

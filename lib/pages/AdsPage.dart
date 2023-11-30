@@ -1,11 +1,13 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:image_picker/image_picker.dart';
-import '../Services/imageViewer.dart';
+import '../Services/ImageViewer.dart';
 import '../Services/PdfViewer.dart';
-import '../Services/videoViewer.dart';
+import '../Services/VideoViewer.dart';
 
 class AdBuilder extends StatefulWidget {
   const AdBuilder({super.key});
@@ -62,7 +64,6 @@ class _AdBuilderState extends State<AdBuilder> {
                   // Handle tap for the first container
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (_) => ImageViewer(imgpath: selectedImg)));
-                  print('Tapped on Image');
                 },
                 child: Padding(
                   padding: const EdgeInsets.only(
@@ -72,7 +73,7 @@ class _AdBuilderState extends State<AdBuilder> {
                       borderRadius: BorderRadius.circular(25),
                       boxShadow: const [
                         BoxShadow(
-                          color: Colors.grey,
+                          color: Color.fromARGB(203, 158, 158, 158),
                           offset: Offset(0.0, 0.0),
                           blurRadius: 2.8,
                           spreadRadius: 4,
@@ -85,24 +86,22 @@ class _AdBuilderState extends State<AdBuilder> {
                         end: Alignment.topCenter,
                       ),
                     ),
-                    child: Container(
-                      child: Row(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(25),
-                            child: Image.asset('assets/cardImg/image.png'),
-                          ),
-                          const SizedBox(width: 120),
-                          Text(
-                            'Place Image',
-                            style: GoogleFonts.jost(
-                                fontSize: 30,
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold),
-                            textAlign: TextAlign.right,
-                          ),
-                        ],
-                      ),
+                    child: Row(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(25),
+                          child: Image.asset('assets/cardImg/image.png'),
+                        ),
+                        const SizedBox(width: 120),
+                        Text(
+                          'Place Image',
+                          style: GoogleFonts.jost(
+                              fontSize: 30,
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold),
+                          textAlign: TextAlign.right,
+                        ),
+                      ],
                     ),
                   ),
                 ),
@@ -122,7 +121,6 @@ class _AdBuilderState extends State<AdBuilder> {
                     });
                   }
                   // Handle tap for the first container
-                  print('Tapped on Video');
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (_) => VideoViewer(
                             vdoPath: vdoPath,
@@ -136,7 +134,7 @@ class _AdBuilderState extends State<AdBuilder> {
                         borderRadius: BorderRadius.circular(25),
                         boxShadow: const [
                           BoxShadow(
-                            color: Colors.grey,
+                            color: Color.fromARGB(203, 158, 158, 158),
                             offset: Offset(0.0, 0.0),
                             blurRadius: 2.8,
                             spreadRadius: 4,
@@ -149,24 +147,22 @@ class _AdBuilderState extends State<AdBuilder> {
                           end: Alignment.bottomRight,
                         ),
                       ),
-                      child: Container(
-                        child: Row(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(25),
-                              child: Image.asset('assets/cardImg/video.png'),
-                            ),
-                            const SizedBox(width: 120),
-                            Text(
-                              'Place Video',
-                              style: GoogleFonts.jost(
-                                  fontSize: 30,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold),
-                              textAlign: TextAlign.right,
-                            ),
-                          ],
-                        ),
+                      child: Row(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(25),
+                            child: Image.asset('assets/cardImg/video.png'),
+                          ),
+                          const SizedBox(width: 120),
+                          Text(
+                            'Place Video',
+                            style: GoogleFonts.jost(
+                                fontSize: 30,
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold),
+                            textAlign: TextAlign.right,
+                          ),
+                        ],
                       )),
                 ),
               ),
@@ -185,7 +181,6 @@ class _AdBuilderState extends State<AdBuilder> {
                     });
                   }
                   // Handle tap for the first container
-                  print('Tapped on PDF');
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (_) => PdfViewer(pdfpath: adFile)));
                 },
@@ -197,7 +192,7 @@ class _AdBuilderState extends State<AdBuilder> {
                         borderRadius: BorderRadius.circular(25),
                         boxShadow: const [
                           BoxShadow(
-                            color: Colors.grey,
+                            color: Color.fromARGB(203, 158, 158, 158),
                             offset: Offset(0.0, 0.0),
                             blurRadius: 2.8,
                             spreadRadius: 4,
@@ -210,24 +205,22 @@ class _AdBuilderState extends State<AdBuilder> {
                           end: Alignment.topLeft,
                         ),
                       ),
-                      child: Container(
-                        child: Row(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(25),
-                              child: Image.asset('assets/cardImg/pdf.png'),
-                            ),
-                            const SizedBox(width: 120),
-                            Text(
-                              'Place PDF',
-                              style: GoogleFonts.jost(
-                                  fontSize: 30,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold),
-                              textAlign: TextAlign.right,
-                            ),
-                          ],
-                        ),
+                      child: Row(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(25),
+                            child: Image.asset('assets/cardImg/pdf.png'),
+                          ),
+                          const SizedBox(width: 120),
+                          Text(
+                            'Place PDF',
+                            style: GoogleFonts.jost(
+                                fontSize: 30,
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold),
+                            textAlign: TextAlign.right,
+                          ),
+                        ],
                       )),
                 ),
               ),

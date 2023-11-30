@@ -70,7 +70,7 @@ class MenuPage extends StatelessWidget {
                         padding: const EdgeInsets.all(10),
                         child: Column(children: [
                           Image.asset(
-                            'assets/Images/officials.png',
+                            'assets/Images/flyers.png',
                             width: 150,
                           ),
                           Padding(

@@ -1,3 +1,5 @@
+// ignore_for_file: unused_field
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
@@ -213,19 +215,19 @@ class _QueryModelState extends State<QueryModel> {
   }
 
   Future<void> _callLLM(prompt) async {
-    print("reached function call");
+    // print("reached function call");
     setState(() {
       lottiePath="assets/animations/loading.json";
     });
     final llmResponse = await chain.invoke('when is the open timings?');
 
-    print(prompt+":"+llmResponse);
+    // print(prompt+":"+llmResponse);
 
     await memory.saveContext(
       inputValues: {'input': prompt},
       outputValues: {'output': llmResponse},
     );
-    print("Context Saved");
+    // print("Context Saved");
     play(llmResponse);
   }
 
@@ -236,7 +238,7 @@ class _QueryModelState extends State<QueryModel> {
     await flutterTts.setPitch(1.0);
     flutterTts.setCompletionHandler(() {
         setState(() {
-          print("Speech completed");
+          // print("Speech completed");
           lottiePath="assets/animations/droid.json";
         });
     });
