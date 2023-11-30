@@ -46,10 +46,10 @@ dependencies:
   langchain: ^0.1.1+1
   langchain_openai: ^0.1.2+2
   file_picker: ^6.1.1
-  flutter_pdfview: ^1.2.7
   video_player: ^2.8.1
   image_picker: ^1.0.4
   pdfx: ^2.5.0
+  appinio_video_player: ^1.2.2
 
 dev_dependencies:
   flutter_test:
@@ -83,6 +83,7 @@ flutter:
     - assets/Images/
     - assets/Audios/
     - assets/animations/
+    - assets/cardImg/
     
 
   # An image asset can refer to one or more resolution-specific "variants", see

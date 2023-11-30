@@ -20,21 +20,12 @@ import 'package:pdfx/pdfx.dart';
     void initState() {
       super.initState();
       pdfControllerPinch = PdfControllerPinch(
-          document: PdfDocument.openFile(widget.pdfpath.toString()));
+          document: PdfDocument.openFile(widget.pdfpath.path));
     }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          "PDF Viewer",
-          style: TextStyle(
-            color: Colors.white,
-          ),
-        ),
-        backgroundColor: Colors.red,
-      ),
       body: _buildUI(),
     );
   }

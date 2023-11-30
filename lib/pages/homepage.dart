@@ -76,7 +76,7 @@ class MenuPage extends StatelessWidget {
                           Padding(
                             padding: const EdgeInsets.all(15),
                             child: Text(
-                              "Officials",
+                              "Flyers",
                               style: GoogleFonts.comfortaa(
                                   fontSize: 15, fontWeight: FontWeight.w800),
                             ),

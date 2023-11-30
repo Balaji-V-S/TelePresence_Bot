@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:image_picker/image_picker.dart';
 import '../Services/imageViewer.dart';
 import '../Services/PdfViewer.dart';
 import '../Services/videoViewer.dart';
@@ -15,6 +16,8 @@ class AdBuilder extends StatefulWidget {
 
 class _AdBuilderState extends State<AdBuilder> {
   late File adFile;
+  late File selectedImg;
+  late File vdoPath;
 
   @override
   Widget build(BuildContext context) {
@@ -50,10 +53,15 @@ class _AdBuilderState extends State<AdBuilder> {
           children: [
             Expanded(
               child: GestureDetector(
-                onTap: () {
+                onTap: () async {
+                  final returnedImg = await ImagePicker()
+                      .pickImage(source: ImageSource.gallery);
+                  setState(() {
+                    selectedImg = File(returnedImg!.path);
+                  });
                   // Handle tap for the first container
-                  Navigator.of(context).push(
-                      MaterialPageRoute(builder: (_) => const ImageViewer()));
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (_) => ImageViewer(imgpath: selectedImg)));
                   print('Tapped on Image');
                 },
                 child: Padding(
@@ -61,37 +69,39 @@ class _AdBuilderState extends State<AdBuilder> {
                       top: 20, left: 40, right: 40, bottom: 20),
                   child: Container(
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(25),
-                        color: Colors.blue),
-                    child: const Center(
-                      child: Text(
-                        'Container 1',
-                        style: TextStyle(color: Colors.white),
+                      borderRadius: BorderRadius.circular(25),
+                      boxShadow: const [
+                        BoxShadow(
+                          color: Colors.grey,
+                          offset: Offset(0.0, 0.0),
+                          blurRadius: 2.8,
+                          spreadRadius: 4,
+                        ),
+                      ],
+                      gradient: const LinearGradient(
+                        colors: [Color(0xff40b557), Color(0xff4caf50)],
+                        stops: [0.25, 0.5],
+                        begin: Alignment.bottomCenter,
+                        end: Alignment.topCenter,
                       ),
                     ),
-                  ),
-                ),
-              ),
-            ),
-            Expanded(
-              child: GestureDetector(
-                onTap: () {
-                  // Handle tap for the first container
-                  print('Tapped on Video');
-                  Navigator.of(context).push(
-                      MaterialPageRoute(builder: (_) => const VideoViewer()));
-                },
-                child: Padding(
-                  padding: const EdgeInsets.only(
-                      top: 20, left: 40, right: 40, bottom: 20),
-                  child: Container(
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(25),
-                        color: Colors.blue),
-                    child: const Center(
-                      child: Text(
-                        'Container 2',
-                        style: TextStyle(color: Colors.white),
+                    child: Container(
+                      child: Row(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(25),
+                            child: Image.asset('assets/cardImg/image.png'),
+                          ),
+                          const SizedBox(width: 120),
+                          Text(
+                            'Place Image',
+                            style: GoogleFonts.jost(
+                                fontSize: 30,
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold),
+                            textAlign: TextAlign.right,
+                          ),
+                        ],
                       ),
                     ),
                   ),
@@ -102,8 +112,71 @@ class _AdBuilderState extends State<AdBuilder> {
               child: GestureDetector(
                 onTap: () async {
                   final result = await FilePicker.platform.pickFiles(
-                    type: FileType.any,
-                    
+                    type: FileType.custom,
+                    allowedExtensions: ['mp4'],
+                  );
+                  if (result != null) {
+                    final path = result.files.single.path!;
+                    setState(() {
+                      vdoPath = File(path);
+                    });
+                  }
+                  // Handle tap for the first container
+                  print('Tapped on Video');
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (_) => VideoViewer(
+                            vdoPath: vdoPath,
+                          )));
+                },
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                      top: 20, left: 40, right: 40, bottom: 20),
+                  child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(25),
+                        boxShadow: const [
+                          BoxShadow(
+                            color: Colors.grey,
+                            offset: Offset(0.0, 0.0),
+                            blurRadius: 2.8,
+                            spreadRadius: 4,
+                          ),
+                        ],
+                        gradient: const LinearGradient(
+                          colors: [Color(0xff5536ab), Color(0xff673ab7)],
+                          stops: [0.25, 0.5],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
+                      ),
+                      child: Container(
+                        child: Row(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(25),
+                              child: Image.asset('assets/cardImg/video.png'),
+                            ),
+                            const SizedBox(width: 120),
+                            Text(
+                              'Place Video',
+                              style: GoogleFonts.jost(
+                                  fontSize: 30,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold),
+                              textAlign: TextAlign.right,
+                            ),
+                          ],
+                        ),
+                      )),
+                ),
+              ),
+            ),
+            Expanded(
+              child: GestureDetector(
+                onTap: () async {
+                  final result = await FilePicker.platform.pickFiles(
+                    type: FileType.custom,
+                    allowedExtensions: ['pdf'],
                   );
                   if (result != null) {
                     final path = result.files.single.path!;
@@ -120,16 +193,42 @@ class _AdBuilderState extends State<AdBuilder> {
                   padding: const EdgeInsets.only(
                       top: 20, left: 40, right: 40, bottom: 20),
                   child: Container(
-                    decoration: BoxDecoration(
+                      decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(25),
-                        color: Colors.blue),
-                    child: const Center(
-                      child: Text(
-                        'Container 3',
-                        style: TextStyle(color: Colors.white),
+                        boxShadow: const [
+                          BoxShadow(
+                            color: Colors.grey,
+                            offset: Offset(0.0, 0.0),
+                            blurRadius: 2.8,
+                            spreadRadius: 4,
+                          ),
+                        ],
+                        gradient: const LinearGradient(
+                          colors: [Color(0xffe91e63), Color(0xffff00ae)],
+                          stops: [0.25, 0.5],
+                          begin: Alignment.bottomRight,
+                          end: Alignment.topLeft,
+                        ),
                       ),
-                    ),
-                  ),
+                      child: Container(
+                        child: Row(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(25),
+                              child: Image.asset('assets/cardImg/pdf.png'),
+                            ),
+                            const SizedBox(width: 120),
+                            Text(
+                              'Place PDF',
+                              style: GoogleFonts.jost(
+                                  fontSize: 30,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold),
+                              textAlign: TextAlign.right,
+                            ),
+                          ],
+                        ),
+                      )),
                 ),
               ),
             ),
