@@ -10,7 +10,7 @@ import 'package:flutter_tts/flutter_tts.dart';
 import 'package:avatar_glow/avatar_glow.dart';
 
 
-const gptKey='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';
+const gptKey='API_KEY : )';
 final llm = OpenAI(apiKey: gptKey);
 final chatModel = ChatOpenAI(
     apiKey: gptKey,

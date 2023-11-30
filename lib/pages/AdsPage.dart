@@ -24,34 +24,34 @@ class _AdBuilderState extends State<AdBuilder> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.grey.shade900,
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(10),
-                child: Image.asset(
-                  'assets/Images/appBar.png',
-                  fit: BoxFit.contain,
-                  height: 35,
-                ),
+      appBar: AppBar(
+        backgroundColor: Colors.grey.shade900,
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(10),
+              child: Image.asset(
+                'assets/Images/appBar.png',
+                fit: BoxFit.contain,
+                height: 35,
               ),
-              Container(
-                  padding: const EdgeInsets.only(right: 90, left: 10),
-                  child: Text('TeleMate',
-                      style: GoogleFonts.jost(
-                          fontSize: 20, fontWeight: FontWeight.bold)))
-            ],
-          ),
-          centerTitle: true,
-          titleTextStyle: const TextStyle(
-              color: Color.fromARGB(255, 254, 252, 252),
-              fontSize: 16,
-              fontWeight: FontWeight.bold),
+            ),
+            Container(
+                padding: const EdgeInsets.only(right: 90, left: 10),
+                child: Text('TeleMate',
+                    style: GoogleFonts.jost(
+                        fontSize: 20, fontWeight: FontWeight.bold)))
+          ],
         ),
-        body: Center(
-            child: Column(
+        centerTitle: true,
+        titleTextStyle: const TextStyle(
+            color: Color.fromARGB(255, 254, 252, 252),
+            fontSize: 16,
+            fontWeight: FontWeight.bold),
+      ),
+      body: Center(
+        child: Column(
           children: [
             Expanded(
               child: GestureDetector(
@@ -79,8 +79,12 @@ class _AdBuilderState extends State<AdBuilder> {
                           spreadRadius: 4,
                         ),
                       ],
+                      // color: Color.
                       gradient: const LinearGradient(
-                        colors: [Color(0xff40b557), Color(0xff4caf50)],
+                        colors: [
+                          Color.fromARGB(234, 64, 33, 137),
+                          Color.fromARGB(255, 64, 20, 135)
+                        ],
                         stops: [0.25, 0.5],
                         begin: Alignment.bottomCenter,
                         end: Alignment.topCenter,
@@ -112,7 +116,7 @@ class _AdBuilderState extends State<AdBuilder> {
                 onTap: () async {
                   final result = await FilePicker.platform.pickFiles(
                     type: FileType.custom,
-                    allowedExtensions: ['mp4'],
+                    allowedExtensions: ['mp4', 'mov', 'avi', 'mkv'],
                   );
                   if (result != null) {
                     final path = result.files.single.path!;
@@ -141,7 +145,10 @@ class _AdBuilderState extends State<AdBuilder> {
                           ),
                         ],
                         gradient: const LinearGradient(
-                          colors: [Color(0xff5536ab), Color(0xff673ab7)],
+                          colors: [
+                            Color(0xff5536ab),
+                            Color.fromARGB(255, 65, 33, 137)
+                          ],
                           stops: [0.25, 0.5],
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
@@ -199,8 +206,11 @@ class _AdBuilderState extends State<AdBuilder> {
                           ),
                         ],
                         gradient: const LinearGradient(
-                          colors: [Color(0xffe91e63), Color(0xffff00ae)],
-                          stops: [0.25, 0.5],
+                          colors: [
+                            Color.fromARGB(234, 64, 33, 137),
+                            Color.fromARGB(255, 64, 20, 135)
+                          ],
+                          stops: [0.3, 0.75],
                           begin: Alignment.bottomRight,
                           end: Alignment.topLeft,
                         ),
@@ -226,6 +236,8 @@ class _AdBuilderState extends State<AdBuilder> {
               ),
             ),
           ],
-        )));
+        ),
+      ),
+    );
   }
 }
