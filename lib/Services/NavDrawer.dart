@@ -111,8 +111,8 @@ class _NavDrawer extends State<NavDrawer> {
 
       Widget buildHeader(BuildContext context) => Container(
         child: Padding(
-          padding: const EdgeInsets.only(top:25,bottom: 50),
-          child: Image.asset('assets/Images/incubationlogo.png'),
+          padding: EdgeInsets.only(top:25,bottom: 50),
+          child: Image.asset('assets/Images/incubationlogo.png',width: 25),
         ),
         padding: const EdgeInsets.only(top: 25),
         decoration: const BoxDecoration(

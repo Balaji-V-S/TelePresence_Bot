@@ -19,7 +19,7 @@ class _WelcomePageState extends State<WelcomePage> {
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.only(top: 120),
+              padding: const EdgeInsets.only(top: 50),
               child: LottieBuilder.asset(
                 'assets/animations/droid.json',
                 width: 350,
@@ -30,7 +30,7 @@ class _WelcomePageState extends State<WelcomePage> {
             Text('Welcome To',style:GoogleFonts.jost(fontSize: 25),),
             // const SizedBox(height: 0),
             Image.asset('assets/Images/incubationlogo.png', scale: 2.6),
-            const SizedBox(height: 60),
+            const SizedBox(height: 40),
             BouncingButton(
                 child: Container(
                   decoration: BoxDecoration(

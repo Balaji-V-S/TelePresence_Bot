@@ -30,8 +30,8 @@ class SplashScreen extends StatelessWidget {
                 height: MediaQuery.of(context).size.height * 0.2,
               ),
               SizedBox(
-                height: 400,
-                width: 400,
+                height: 300,
+                width: 300,
                 child: Lottie.asset('assets/animations/droid.json'),
               ),
               SizedBox(
@@ -52,7 +52,7 @@ class SplashScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       SizedBox(
-                        height: 80,
+                        height: 60,
                       
                         child: Image.asset(
                           'assets/Images/incubationlogo.png',

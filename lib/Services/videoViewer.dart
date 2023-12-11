@@ -1,20 +1,21 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:appinio_video_player/appinio_video_player.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class VideoViewer extends StatefulWidget {
   const VideoViewer({Key? key, required this.vdoPath}) : super(key: key);
-    final File vdoPath;
+  final File vdoPath;
 
   @override
   State<VideoViewer> createState() => _VideoViewerState();
 }
 
-class _VideoViewerState extends State<VideoViewer> {
+class _VideoViewerState extends State<VideoViewer> with WidgetsBindingObserver {
   late CustomVideoPlayerController _customVideoPlayerController;
 
-
   late bool isLoading = true;
+  bool isLocked = false;
 
   @override
   void initState() {
@@ -30,23 +31,68 @@ class _VideoViewerState extends State<VideoViewer> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: isLoading
-          ? const Center(
-              child: CircularProgressIndicator(
-                color: Colors.red,
-              ),
-            )
-          : Column(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                CustomVideoPlayer(
-                  customVideoPlayerController: _customVideoPlayerController,
+    return WillPopScope(
+      onWillPop: () async {
+        return !isLocked;
+      },
+      child: Scaffold(
+        body: isLoading
+            ? const Center(
+                child: CircularProgressIndicator(
+                  color: Colors.red,
                 ),
-              ],
-            ),
+              )
+            : Column(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  CustomVideoPlayer(
+                    customVideoPlayerController: _customVideoPlayerController,
+                  ),
+                ],
+              ),
+        floatingActionButton: FloatingActionButton.large(
+          backgroundColor: Colors.white,
+          elevation: 50,
+          onPressed: () {
+            setState(() {
+              isLocked = !isLocked;
+            });
+            if (isLocked) {
+              Fluttertoast.showToast(
+                  msg: "Screen Locked",
+                  toastLength: Toast.LENGTH_SHORT,
+                  gravity: ToastGravity.CENTER,
+                  timeInSecForIosWeb: 1,
+                  backgroundColor: const Color.fromARGB(144, 255, 255, 255),
+                  textColor: Colors.black,
+                  fontSize: 16.0);
+            } else {
+              Fluttertoast.showToast(
+                msg: "Screen Unlocked",
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.CENTER,
+                timeInSecForIosWeb: 1,
+                backgroundColor: const Color.fromARGB(144, 255, 255, 255),
+                textColor: Colors.black,
+                fontSize: 16.0,
+              );
+            }
+          },
+          child: isLocked
+              ? const Icon(
+                  Icons.lock_outline,
+                  color: Colors.black,
+                  size:40,
+                )
+              : const Icon(
+                  Icons.lock_open,
+                  color: Colors.black,
+                  size:40,
+                ),
+        ),
+      ),
     );
   }
 

@@ -1,32 +1,82 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:pdfx/pdfx.dart';
 
-  class PdfViewer extends StatefulWidget {
+class PdfViewer extends StatefulWidget {
   const PdfViewer({Key? key, required this.pdfpath}) : super(key: key);
-    final File pdfpath;
+  final File pdfpath;
 
-    @override
-    State<PdfViewer> createState() => _PdfViewerState();
+  @override
+  State<PdfViewer> createState() => _PdfViewerState();
+}
+
+class _PdfViewerState extends State<PdfViewer> with WidgetsBindingObserver {
+  late PdfControllerPinch pdfControllerPinch;
+
+  int totalPageCount = 0, currentPage = 1;
+  bool isLocked=false;
+
+  @override
+  void initState() {
+    super.initState();
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
+        overlays: [SystemUiOverlay.bottom]);
+    pdfControllerPinch =
+        PdfControllerPinch(document: PdfDocument.openFile(widget.pdfpath.path));
   }
-
-  class _PdfViewerState extends State<PdfViewer> {
-    late PdfControllerPinch pdfControllerPinch;
-
-    int totalPageCount = 0, currentPage = 1;
-
-    @override
-    void initState() {
-      super.initState();
-      pdfControllerPinch = PdfControllerPinch(
-          document: PdfDocument.openFile(widget.pdfpath.path));
-    }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: _buildUI(),
+    return WillPopScope(
+      onWillPop: () async {
+        return !isLocked;
+      },
+      child: Scaffold(
+        body: _buildUI(),
+        floatingActionButton: FloatingActionButton.large(
+            backgroundColor: Colors.white,
+            elevation: 50,
+            onPressed: () {
+              setState(() {
+                isLocked = !isLocked;
+              });
+              if (isLocked) {
+                Fluttertoast.showToast(
+                    msg: "Screen Locked",
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.CENTER,
+                    timeInSecForIosWeb: 1,
+                    backgroundColor: const Color.fromARGB(144, 255, 255, 255),
+                    textColor: Colors.black,
+                    fontSize: 16.0);
+              } else {
+                Fluttertoast.showToast(
+                  msg: "Screen Unlocked",
+                  toastLength: Toast.LENGTH_SHORT,
+                  gravity: ToastGravity.CENTER,
+                  timeInSecForIosWeb: 1,
+                  backgroundColor: const Color.fromARGB(144, 255, 255, 255),
+                  textColor: Colors.black,
+                  fontSize: 16.0,
+                );
+              }
+            },
+            child: isLocked
+                ? const Icon(
+                    Icons.lock_outline,
+                    color: Color.fromRGBO(0, 0, 0, 1),
+                    size: 40,
+                  )
+                : const Icon(
+                    Icons.lock_open,
+                    color: Colors.black,
+                    size: 40,
+                  ),
+          ),
+      ),
     );
   }
 

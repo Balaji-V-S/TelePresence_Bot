@@ -1,6 +1,7 @@
 // ignore_for_file: unused_field
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 import 'package:speech_to_text/speech_to_text.dart';
@@ -9,13 +10,10 @@ import 'package:langchain_openai/langchain_openai.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:avatar_glow/avatar_glow.dart';
 
-
-const gptKey='API_KEY : )';
+const gptKey = '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';
 final llm = OpenAI(apiKey: gptKey);
-final chatModel = ChatOpenAI(
-    apiKey: gptKey,
-    temperature: 2,
-    model: 'gpt-3.5-turbo');
+final chatModel =
+    ChatOpenAI(apiKey: gptKey, temperature: 2, model: 'gpt-3.5-turbo');
 final embeddings = OpenAIEmbeddings(apiKey: gptKey);
 const stringOutputParser = StringOutputParser();
 final memory = ConversationBufferMemory(returnMessages: true);
@@ -146,7 +144,7 @@ R&D team: Balamurugan U, R&D executive technical head
 Opening Time: 8AM - 12PM (Monday - Saturday)
 9AM - 6PM (Sunday)
 ''', //Role Assigned
-),
+  ),
   const MessagesPlaceholder(variableName: 'history'),
   HumanChatMessagePromptTemplate.fromTemplate('{input}'),
 ]);
@@ -178,13 +176,15 @@ class _QueryModelState extends State<QueryModel> {
   String _wordsSpoken = "";
   String llmResponse = "";
   double _confidenceLevel = 0;
-  String lottiePath="assets/animations/droid.json";
+  String lottiePath = "assets/animations/droid.json";
 
   FlutterTts flutterTts = FlutterTts();
 
   @override
   void initState() {
     super.initState();
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
+        overlays: [SystemUiOverlay.bottom]);
     initSpeech();
     initTTS();
   }
@@ -217,12 +217,12 @@ class _QueryModelState extends State<QueryModel> {
   Future<void> _callLLM(prompt) async {
     // print("reached function call");
     setState(() {
-      lottiePath="assets/animations/loading.json";
+      lottiePath = "assets/animations/loading.json";
     });
-    final llmResponse = await chain.invoke('when is the open timings?');
+    final llmResponse = await chain.invoke(prompt);
 
     // print(prompt+":"+llmResponse);
-
+    print(prompt+":"+llmResponse);
     await memory.saveContext(
       inputValues: {'input': prompt},
       outputValues: {'output': llmResponse},
@@ -231,22 +231,22 @@ class _QueryModelState extends State<QueryModel> {
     play(llmResponse);
   }
 
-  void initTTS() async{
+  void initTTS() async {
     await flutterTts.setLanguage('en-IN');
-    await flutterTts.setSpeechRate(1);
+    await flutterTts.setSpeechRate(0.5);
     await flutterTts.setVolume(1.0);
     await flutterTts.setPitch(1.0);
     flutterTts.setCompletionHandler(() {
-        setState(() {
-          // print("Speech completed");
-          lottiePath="assets/animations/droid.json";
-        });
+      setState(() {
+        // print("Speech completed");
+        lottiePath = "assets/animations/droid.json";
+      });
     });
   }
 
   Future<dynamic> play(response) async {
     setState(() {
-      lottiePath="assets/animations/speaking.json";
+      lottiePath = "assets/animations/speaking.json";
     });
     await flutterTts.speak(response);
   }
@@ -254,10 +254,9 @@ class _QueryModelState extends State<QueryModel> {
   void stop() async {
     await flutterTts.stop();
     setState(() {
-        lottiePath="assets/animations/droid.json";
+      lottiePath = "assets/animations/droid.json";
     });
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -323,7 +322,7 @@ class _QueryModelState extends State<QueryModel> {
             _speechToText.isListening
                 ? LottieBuilder.asset('assets/animations/micInitialized.json')
                 : const Padding(
-                    padding: EdgeInsets.only(bottom: 30),
+                    padding: EdgeInsets.only(bottom: 15),
                     child: Text("Not Initialised"),
                   ),
             Expanded(

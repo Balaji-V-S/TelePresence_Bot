@@ -1,10 +1,14 @@
+import 'dart:ffi';
 import 'dart:io';
 import 'AdsPage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:gradient_borders/gradient_borders.dart';
 import 'package:lottie/lottie.dart';
+import './optionsPage.dart';
 import '../Services/Navdrawer.dart';
 import '../Services/SpeechtoText.dart';
+import '../components/shadowLottie.dart';
 
 class MenuPage extends StatelessWidget {
   const MenuPage({super.key});
@@ -13,117 +17,161 @@ class MenuPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return WillPopScope(
       child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.grey.shade900,
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(10),
-                child: Image.asset(
-                  'assets/Images/appBar.png',
-                  fit: BoxFit.contain,
-                  height: 35,
-                ),
-              ),
-              Container(
-                  padding: const EdgeInsets.only(right: 90, left: 10),
-                  child: Text('TeleMate',
-                      style: GoogleFonts.jost(
-                          fontSize: 20, fontWeight: FontWeight.bold)))
-            ],
-          ),
-          centerTitle: true,
-          titleTextStyle: const TextStyle(
-              color: Color.fromARGB(255, 254, 252, 252),
-              fontSize: 16,
-              fontWeight: FontWeight.bold),
-        ),
-        drawer: const NavDrawer(),
+        backgroundColor: const Color.fromARGB(1, 13, 13, 13),
         body: Center(
             child: Column(
           children: [
-            Container(
-              child: Lottie.asset('assets/animations/droid.json', height: 250),
+            LottieShadow(
+              shadowColor: Color.fromRGBO(123, 97, 255, 0.5),
+              child: Lottie.asset('assets/animations/droid.json', height: 600),
             ),
-            // const SizedBox(height: 100),
-            Text(
-              'Whom do you want to visit?',
-              style: GoogleFonts.comfortaa(fontSize: 20),
+            ShaderMask(
+              shaderCallback: (bounds) {
+                return const LinearGradient(
+                  colors: [
+                    Color.fromRGBO(255, 255, 255, 0.07),
+                    Color.fromRGBO(255, 255, 255, 1),
+                    Color.fromRGBO(255, 255, 255, 0),
+                  ],
+                  begin: Alignment.centerLeft,
+                  end: Alignment.centerRight,
+                ).createShader(bounds);
+              },
+              child: const Text(
+                '                  Choose a Category               ',
+                style: TextStyle(
+                  fontSize: 50.0,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'Roboto',
+                  color: Colors.white,
+                ),
+              ),
             ),
             const SizedBox(height: 30),
             Padding(
               padding: const EdgeInsets.all(20),
-              child: Row(
-                children: [
-                  GestureDetector(
-                    child: Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.black),
-                        borderRadius: BorderRadius.circular(15),
-                        gradient: const LinearGradient(colors: [
-                          Color.fromARGB(222, 255, 255, 255),
-                          Color.fromARGB(239, 181, 190, 243)
-                        ]),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(10),
-                        child: Column(children: [
-                          Image.asset(
-                            'assets/Images/flyers.png',
-                            width: 150,
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(15),
-                            child: Text(
-                              "Flyers",
-                              style: GoogleFonts.comfortaa(
-                                  fontSize: 15, fontWeight: FontWeight.w800),
+              child: Container(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    GestureDetector(
+                      child: Container(
+                        height: 432,
+                        width: 669,
+                        color: const Color.fromRGBO(43, 43, 43, 100),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              alignment: Alignment.topLeft,
+                              width: 100,
+                              decoration: BoxDecoration(
+                                  border: const GradientBoxBorder(
+                                    gradient: LinearGradient(
+                                      colors: [
+                                        Color.fromRGBO(13, 9, 255, 100),
+                                        Color.fromRGBO(229, 74, 74, 65),
+                                        Color.fromRGBO(246, 246, 246, 100)
+                                      ],
+                                      begin: Alignment.topLeft,
+                                      end: Alignment.bottomRight,
+                                    ),
+                                    width: 4,
+                                  ),
+                                  borderRadius: BorderRadius.circular(16)),
+                              child: Image.asset('assets/cardImg/botIcon.png'),
                             ),
-                          ),
-                        ]),
-                      ),
-                    ),
-                    onTap: () {
-                      Navigator.of(context)
-                          .push(MaterialPageRoute(builder: (_) => const AdBuilder()));
-                    },
-                  ),
-                  const SizedBox(width: 20),
-                  GestureDetector(
-                    child: Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.black),
-                        borderRadius: BorderRadius.circular(15),
-                        gradient: const LinearGradient(colors: [
-                          Color.fromARGB(222, 255, 255, 255),
-                          Color.fromARGB(239, 181, 190, 243)
-                        ]),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(10),
-                        child: Column(children: [
-                          Image.asset(
-                            'assets/Images/engineer.png',
-                            width: 150,
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(15),
-                            child: Text(
-                              "Projects",
-                              style: GoogleFonts.comfortaa(
-                                  fontSize: 15, fontWeight: FontWeight.w800),
+                            Container(
+                              alignment: Alignment.centerLeft,
+                              child: const Text(
+                                'Sairam-X',
+                                textAlign: TextAlign.left,
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 30,
+                                    fontWeight: FontWeight.w600,
+                                    fontFamily: 'Roboto'),
+                              ),
                             ),
-                          ),
-                        ]),
+                            Container(
+                              alignment: Alignment.bottomLeft,
+                              child: const Text(
+                                'Explore our newest chatbot and discover its innovative features!',
+                                textAlign: TextAlign.left,
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 20,
+                                    fontFamily: 'Roboto'),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (_) => const QueryModel()));
+                      },
                     ),
-                    onTap: () {
-                      Navigator.of(context)
-                          .push(MaterialPageRoute(builder: (_) =>const QueryModel()));
-                    },
-                  ),
-                ],
+                    const SizedBox(width: 20),
+                    GestureDetector(
+                      child: Container(
+                        height: 432,
+                        width: 669,
+                        color: const Color.fromRGBO(43, 43, 43, 100),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              alignment: Alignment.topLeft,
+                              width: 100,
+                              decoration: BoxDecoration(
+                                  border: const GradientBoxBorder(
+                                    gradient: LinearGradient(
+                                      colors: [
+                                        Color.fromRGBO(13, 9, 255, 100),
+                                        Color.fromRGBO(229, 74, 74, 65),
+                                        Color.fromRGBO(246, 246, 246, 100)
+                                      ],
+                                      begin: Alignment.topLeft,
+                                      end: Alignment.bottomRight,
+                                    ),
+                                    width: 4,
+                                  ),
+                                  borderRadius: BorderRadius.circular(16)),
+                              child: Image.asset('assets/cardImg/adList.png'),
+                            ),
+                            Container(
+                              alignment: Alignment.centerLeft,
+                              child: const Text(
+                                'Build Your Ad',
+                                textAlign: TextAlign.left,
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 30,
+                                    fontWeight: FontWeight.w600,
+                                    fontFamily: 'Roboto'),
+                              ),
+                            ),
+                            Container(
+                              child: const Text(
+                                'Explore our features to create Ads and showcase them!',
+                                textAlign: TextAlign.left,
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 20,
+                                    fontFamily: 'Roboto'),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (_) => const optionsPage()));
+                      },
+                    ),
+                  ],
+                ),
               ),
             )
           ],
