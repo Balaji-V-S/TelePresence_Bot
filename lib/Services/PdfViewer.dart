@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:pdfx/pdfx.dart';
 
 class PdfViewer extends StatefulWidget {
@@ -17,7 +18,8 @@ class _PdfViewerState extends State<PdfViewer> with WidgetsBindingObserver {
   late PdfControllerPinch pdfControllerPinch;
 
   int totalPageCount = 0, currentPage = 1;
-  bool isLocked=false;
+  bool isLocked = false;
+  String correctPassword = "";
 
   @override
   void initState() {
@@ -26,6 +28,11 @@ class _PdfViewerState extends State<PdfViewer> with WidgetsBindingObserver {
         overlays: [SystemUiOverlay.bottom]);
     pdfControllerPinch =
         PdfControllerPinch(document: PdfDocument.openFile(widget.pdfpath.path));
+    SharedPreferences.getInstance().then((prefs) {
+      setState(() {
+        correctPassword = prefs.getString('password')!;
+      });
+    });
   }
 
   @override
@@ -37,45 +44,38 @@ class _PdfViewerState extends State<PdfViewer> with WidgetsBindingObserver {
       child: Scaffold(
         body: _buildUI(),
         floatingActionButton: FloatingActionButton.large(
-            backgroundColor: Colors.white,
-            elevation: 50,
-            onPressed: () {
+          backgroundColor: Colors.white,
+          elevation: 50,
+          onPressed: () {
+            if (isLocked) {
+              _showPasswordDialog(context);
+            } else {
               setState(() {
                 isLocked = !isLocked;
               });
-              if (isLocked) {
-                Fluttertoast.showToast(
-                    msg: "Screen Locked",
-                    toastLength: Toast.LENGTH_SHORT,
-                    gravity: ToastGravity.CENTER,
-                    timeInSecForIosWeb: 1,
-                    backgroundColor: const Color.fromARGB(144, 255, 255, 255),
-                    textColor: Colors.black,
-                    fontSize: 16.0);
-              } else {
-                Fluttertoast.showToast(
-                  msg: "Screen Unlocked",
-                  toastLength: Toast.LENGTH_SHORT,
-                  gravity: ToastGravity.CENTER,
-                  timeInSecForIosWeb: 1,
-                  backgroundColor: const Color.fromARGB(144, 255, 255, 255),
-                  textColor: Colors.black,
-                  fontSize: 16.0,
-                );
-              }
-            },
-            child: isLocked
-                ? const Icon(
-                    Icons.lock_outline,
-                    color: Color.fromRGBO(0, 0, 0, 1),
-                    size: 40,
-                  )
-                : const Icon(
-                    Icons.lock_open,
-                    color: Colors.black,
-                    size: 40,
-                  ),
-          ),
+              Fluttertoast.showToast(
+                msg: "Screen Locked",
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.CENTER,
+                timeInSecForIosWeb: 1,
+                backgroundColor: const Color.fromARGB(144, 255, 255, 255),
+                textColor: Colors.black,
+                fontSize: 16.0,
+              );
+            }
+          },
+          child: isLocked
+              ? const Icon(
+                  Icons.lock_outline,
+                  color: Colors.black,
+                  size: 40,
+                )
+              : const Icon(
+                  Icons.lock_open,
+                  color: Colors.black,
+                  size: 40,
+                ),
+        ),
       ),
     );
   }
@@ -92,13 +92,13 @@ class _PdfViewerState extends State<PdfViewer> with WidgetsBindingObserver {
             IconButton(
               onPressed: () {
                 pdfControllerPinch.previousPage(
-                  duration: Duration(
+                  duration: const Duration(
                     milliseconds: 500,
                   ),
                   curve: Curves.linear,
                 );
               },
-              icon: Icon(
+              icon: const Icon(
                 Icons.arrow_back,
               ),
             ),
@@ -106,13 +106,13 @@ class _PdfViewerState extends State<PdfViewer> with WidgetsBindingObserver {
             IconButton(
               onPressed: () {
                 pdfControllerPinch.nextPage(
-                  duration: Duration(
+                  duration: const Duration(
                     milliseconds: 500,
                   ),
                   curve: Curves.linear,
                 );
               },
-              icon: Icon(
+              icon: const Icon(
                 Icons.arrow_forward,
               ),
             ),
@@ -139,6 +139,102 @@ class _PdfViewerState extends State<PdfViewer> with WidgetsBindingObserver {
           });
         },
       ),
+    );
+  }
+
+  Future<void> _showPasswordDialog(BuildContext context) {
+    String enteredPassword = "";
+    bool isPasswordCorrect = false;
+
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: const Color.fromARGB(150, 13, 13, 13),
+          title: const Text(
+            'Enter Password',
+            style: TextStyle(color: Colors.white, fontFamily: 'Roboto'),
+          ),
+          content: TextField(
+            decoration: InputDecoration(
+              hintStyle: TextStyle(color: Colors.grey[400]),
+              enabledBorder: const OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.white),
+              ),
+              hintText: 'Password',
+            ),
+            style: const TextStyle(color: Colors.white),
+            onChanged: (value) {
+              enteredPassword = value;
+            },
+            obscureText: true,
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(false); // Close the dialog
+              },
+              child: const Text(
+                'Cancel',
+                style: TextStyle(color: Colors.white, fontFamily: 'Roboto'),
+              ),
+            ),
+            TextButton(
+              onPressed: () {
+                isPasswordCorrect = enteredPassword == correctPassword;
+
+                if (isPasswordCorrect) {
+                  // Unlock the page and close the dialog
+                  Navigator.of(context).pop(true);
+                  setState(() {
+                    isLocked = false;
+                  });
+                  Fluttertoast.showToast(
+                      msg: "Screen Unlocked",
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.CENTER,
+                      timeInSecForIosWeb: 1,
+                      backgroundColor: const Color.fromARGB(144, 255, 255, 255),
+                      textColor: Colors.black,
+                      fontSize: 16.0);
+                } else {
+                  // Show error message for wrong password
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        backgroundColor: const Color.fromARGB(150, 13, 13, 13),
+                        title: const Text(
+                          'Wrong Password',
+                          style: TextStyle(
+                              color: Colors.white, fontFamily: 'Roboto'),
+                        ),
+                        content: const Text(
+                          'Please try again.',
+                          style: TextStyle(
+                              color: Colors.white, fontFamily: 'Roboto'),
+                        ),
+                        actions: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: const Text('OK'),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                }
+              },
+              child: const Text(
+                'Unlock',
+                style: TextStyle(color: Colors.white, fontFamily: 'Roboto'),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 }

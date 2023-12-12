@@ -2,8 +2,8 @@
 
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:gradient_borders/gradient_borders.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:image_picker/image_picker.dart';
 import '../Services/ImageViewer.dart';
@@ -23,7 +23,17 @@ class _AdBuilderState extends State<AdBuilder> with WidgetsBindingObserver {
   late File adFile;
   late File selectedImg;
   late File vdoPath;
-  final String correctPassword = "12345678";
+  String correctPassword = "";
+
+  @override
+  void initState() {
+    super.initState();
+    SharedPreferences.getInstance().then((prefs) {
+      setState(() {
+        correctPassword = prefs.getString('password')!;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,327 +43,320 @@ class _AdBuilderState extends State<AdBuilder> with WidgetsBindingObserver {
           body: Center(
             child: Column(
               children: [
-                Container(
-                  alignment: Alignment.centerLeft,
-                  child: ShaderMask(
-                    shaderCallback: (bounds) {
-                      return const LinearGradient(
-                        colors: [
-                          Color.fromRGBO(255, 255, 255, 0.5),
-                          Color.fromRGBO(255, 255, 255, 1),
-                          Color.fromRGBO(255, 255, 255, 0),
-                        ],
-                        begin: Alignment.centerLeft,
-                        end: Alignment.centerRight,
-                      ).createShader(bounds);
-                    },
-                    child: const Text(
-                      'Create Your Advertisement              ',
-                      style: TextStyle(
-                        fontSize: 50.0,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: 'Roboto',
-                        color: Colors.white,
+                Padding(
+                  padding: const EdgeInsets.only(top: 100, left: 50),
+                  child: Container(
+                    alignment: Alignment.centerLeft,
+                    child: ShaderMask(
+                      shaderCallback: (bounds) {
+                        return const LinearGradient(
+                          colors: [
+                            Color.fromRGBO(255, 255, 255, 0.5),
+                            Color.fromRGBO(255, 255, 255, 1),
+                            Color.fromRGBO(255, 255, 255, 0),
+                          ],
+                          begin: Alignment.centerLeft,
+                          end: Alignment.centerRight,
+                        ).createShader(bounds);
+                      },
+                      child: const Text(
+                        'Create Your Advertisement              ',
+                        style: TextStyle(
+                          fontSize: 50.0,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: 'Roboto',
+                          color: Colors.white,
+                        ),
                       ),
                     ),
                   ),
                 ),
-                Row(
-                  children: [
-                    Container(
-                      decoration: const BoxDecoration(
-                        gradient: LinearGradient(colors: [
-                          Color.fromRGBO(21,21,21,100),
-                          Color.fromRGBO(21,21,21,50),
-                          Color.fromRGBO(21,21,21,0),
-                        ]),
-                      ),
-                      child: const Column(
-                        children: [
-                          Row(
-                            children: [
-                              Text(
-                                'Add Images',
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 25),
+                const SizedBox(height: 40),
+                Padding(
+                  padding: const EdgeInsets.only(left: 50, right: 50),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: GestureDetector(
+                          onTap: () async {
+                            final returnedImg = await ImagePicker()
+                                .pickImage(source: ImageSource.gallery);
+                            setState(() {
+                              selectedImg = File(returnedImg!.path);
+                            });
+                            // Handle tap for the first container
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (_) =>
+                                    ImageViewer(imgpath: selectedImg)));
+                          },
+                          child: Container(
+                            height: 150,
+                            decoration: BoxDecoration(
+                              color: Colors.transparent.withOpacity(0.7),
+                              borderRadius: BorderRadius.circular(10.0),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(0.3),
+                                  spreadRadius: 2.0,
+                                  blurRadius: 4.0,
+                                  offset: const Offset(0, 2),
+                                ),
+                              ],
+                              gradient: const LinearGradient(
+                                colors: [
+                                  Color.fromARGB(255, 21, 21, 21),
+                                  Color.fromARGB(127, 21, 21, 21),
+                                  Color.fromARGB(0, 21, 21, 21),
+                                ],
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
                               ),
-                              Icon(
-                                Icons.add,
-                                color: Colors.white,
-                                size: 40,
+                              border: const GradientBoxBorder(
+                                width: 0.2,
+                                gradient: LinearGradient(
+                                  colors: [
+                                    Color.fromRGBO(230, 68, 103, 15),
+                                    Color.fromRGBO(232, 28, 72, 0.612),
+                                  ],
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
+                                ),
                               ),
-                            ],
+                            ),
+                            child: const Column(
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.all(15),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'Add Images          ',
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 25,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      Icon(
+                                        Icons.add,
+                                        color: Colors.white,
+                                        size: 40,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 20,
+                                ),
+                                Text(
+                                  'Make a visual impact: \nCreate powerful image ads with our robot.',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontStyle: FontStyle.italic),
+                                )
+                              ],
+                            ),
                           ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          Text(
-                            'Make a visual impact: \nCreate powerful image ads with our robot.',
-                            style: TextStyle(color: Colors.white),
-                          )
-                        ],
+                        ),
                       ),
-                    ),
-                    const SizedBox(
-                      width: 50,
-                    ),
-                    Container(
-                      decoration:const BoxDecoration(
-                        gradient: LinearGradient(colors: [
-                          Color.fromRGBO(21,21,21,100),
-                          Color.fromRGBO(21,21,21,50),
-                          Color.fromRGBO(21,21,21,0),
-                        ]),
+                      const SizedBox(
+                        width: 50,
                       ),
-                      child: const Column(
-                        children: [
-                          Row(
-                            children: [
-                              Text(
-                                'Add Videos',
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 25),
+                      Expanded(
+                        child: GestureDetector(
+                          onTap: () async {
+                            final result = await FilePicker.platform.pickFiles(
+                              type: FileType.custom,
+                              allowedExtensions: ['mp4', 'mov', 'avi', 'mkv'],
+                            );
+                            if (result != null) {
+                              final path = result.files.single.path!;
+                              setState(() {
+                                vdoPath = File(path);
+                              });
+                            }
+                            // Handle tap for the first container
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (_) => VideoViewer(
+                                  vdoPath: vdoPath,
+                                ),
                               ),
-                              Icon(
-                                Icons.add,
-                                color: Colors.white,
-                                size: 40,
+                            );
+                          },
+                          child: Container(
+                            height: 150,
+                            decoration: BoxDecoration(
+                              color: Colors.transparent.withOpacity(0.7),
+                              borderRadius: BorderRadius.circular(10.0),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(0.3),
+                                  spreadRadius: 2.0,
+                                  blurRadius: 4.0,
+                                  offset: const Offset(0, 2),
+                                ),
+                              ],
+                              gradient: const LinearGradient(
+                                colors: [
+                                  Color.fromARGB(255, 21, 21, 21),
+                                  Color.fromARGB(127, 21, 21, 21),
+                                  Color.fromARGB(0, 21, 21, 21),
+                                ],
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
                               ),
-                            ],
+                              border: const GradientBoxBorder(
+                                width: 0.2,
+                                gradient: LinearGradient(
+                                  colors: [
+                                    Color.fromRGBO(230, 68, 103, 15),
+                                    Color.fromRGBO(232, 28, 72, 0.612),
+                                  ],
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
+                                ),
+                              ),
+                            ),
+                            child: const Column(
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.all(15),
+                                  child: Row(
+                                    children: [
+                                      Text(
+                                        'Add Videos          ',
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 25,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      Icon(
+                                        Icons.add,
+                                        color: Colors.white,
+                                        size: 40,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 15,
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.only(left: 10, bottom: 5),
+                                  child: Text(
+                                    'Say it with video:\nCreate video ads that connect with your audience.',
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontStyle: FontStyle.italic),
+                                  ),
+                                )
+                              ],
+                            ),
                           ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          Text(
-                            'Say it with video:\nCreate video ads that connect with your audience.',
-                            style: TextStyle(color: Colors.white),
-                          )
-                        ],
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
                 const SizedBox(
                   height: 50,
                 ),
-                Container(
-                  width: 300,
-                  decoration:const BoxDecoration(
-                        gradient: LinearGradient(colors: [
-                          Color.fromRGBO(21,21,21,100),
-                          Color.fromRGBO(21,21,21,50),
-                          Color.fromRGBO(21,21,21,0),
-                        ]),
-                      ),
-                  child: const Column(
+                Padding(
+                  padding: const EdgeInsets.only(left: 50),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
-                        children: [
-                          Text(
-                            'Add PDF',
-                            style: TextStyle(color: Colors.white, fontSize: 25),
-                          ),
-                          Icon(
-                            Icons.add,
-                            color: Colors.white,
-                            size: 40,
-                          ),
-                        ],
-                      ),
-                      Text(
-                        'Go beyond the surface:\n Create in-depth PDF ads that tell the whole story.',
-                        style: TextStyle(color: Colors.white),
-                      )
-                    ],
-                  ),
-                ),
-                Expanded(
-                  child: GestureDetector(
-                    onTap: () async {
-                      final returnedImg = await ImagePicker()
-                          .pickImage(source: ImageSource.gallery);
-                      setState(() {
-                        selectedImg = File(returnedImg!.path);
-                      });
-                      // Handle tap for the first container
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (_) => ImageViewer(imgpath: selectedImg)));
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.only(
-                          top: 20, left: 40, right: 40, bottom: 20),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(25),
-                          boxShadow: const [
-                            BoxShadow(
-                              color: Color.fromARGB(203, 158, 158, 158),
-                              offset: Offset(0.0, 0.0),
-                              blurRadius: 2.8,
-                              spreadRadius: 4,
-                            ),
-                          ],
-                          // color: Color.
-                          gradient: const LinearGradient(
-                            colors: [
-                              Color.fromARGB(255, 231, 231, 232),
-                              Color.fromARGB(234, 255, 255, 255),
-                            ],
-                            stops: [0.25, 0.5],
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                          ),
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(20),
-                              child: Image.asset(
-                                'assets/cardImg/image.png',
-                                width: 150,
-                              ),
-                            ),
-                            Text(
-                              'Place Image',
-                              style: GoogleFonts.audiowide(
-                                  fontSize: 30,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w400),
-                              textAlign: TextAlign.right,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: GestureDetector(
-                    onTap: () async {
-                      final result = await FilePicker.platform.pickFiles(
-                        type: FileType.custom,
-                        allowedExtensions: ['mp4', 'mov', 'avi', 'mkv'],
-                      );
-                      if (result != null) {
-                        final path = result.files.single.path!;
-                        setState(() {
-                          vdoPath = File(path);
-                        });
-                      }
-                      // Handle tap for the first container
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (_) => VideoViewer(
-                                vdoPath: vdoPath,
-                              )));
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.only(
-                          top: 20, left: 40, right: 40, bottom: 20),
-                      child: Container(
+                      GestureDetector(
+                        onTap: () async {
+                          final result = await FilePicker.platform.pickFiles(
+                            type: FileType.custom,
+                            allowedExtensions: ['pdf'],
+                          );
+                          if (result != null) {
+                            final path = result.files.single.path!;
+                            setState(() {
+                              adFile = File(path);
+                            });
+                          }
+                          // Handle tap for the first container
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (_) => PdfViewer(pdfpath: adFile)));
+                        },
+                        child: Container(
+                          height: 150,
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(25),
-                            boxShadow: const [
+                            color: Colors.transparent.withOpacity(0.7),
+                            borderRadius: BorderRadius.circular(10.0),
+                            boxShadow: [
                               BoxShadow(
-                                color: Color.fromARGB(203, 158, 158, 158),
-                                offset: Offset(0.0, 0.0),
-                                blurRadius: 2.8,
-                                spreadRadius: 4,
+                                color: Colors.grey.withOpacity(0.3),
+                                spreadRadius: 2.0,
+                                blurRadius: 4.0,
+                                offset:const Offset(0, 2),
                               ),
                             ],
                             gradient: const LinearGradient(
                               colors: [
-                                Color.fromARGB(255, 233, 233, 234),
-                                Color.fromARGB(234, 255, 255, 255),
+                                Color.fromARGB(255, 21, 21, 21),
+                                Color.fromARGB(127, 21, 21, 21),
+                                Color.fromARGB(0, 21, 21, 21),
                               ],
-                              stops: [0.25, 0.75],
                               begin: Alignment.topLeft,
                               end: Alignment.bottomRight,
                             ),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(20),
-                                child: Image.asset('assets/cardImg/video.png',
-                                    width: 150),
+                            border: const GradientBoxBorder(
+                              width: 0.2,
+                              gradient: LinearGradient(
+                                colors: [
+                                  Color.fromRGBO(230, 68, 103, 15),
+                                  Color.fromRGBO(232, 28, 72, 0.612),
+                                ],
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
                               ),
-                              Text(
-                                'Place Video',
-                                style: GoogleFonts.audiowide(
-                                    fontSize: 30,
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w400),
-                                textAlign: TextAlign.right,
-                              ),
-                            ],
-                          )),
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: GestureDetector(
-                    onTap: () async {
-                      final result = await FilePicker.platform.pickFiles(
-                        type: FileType.custom,
-                        allowedExtensions: ['pdf'],
-                      );
-                      if (result != null) {
-                        final path = result.files.single.path!;
-                        setState(() {
-                          adFile = File(path);
-                        });
-                      }
-                      // Handle tap for the first container
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (_) => PdfViewer(pdfpath: adFile)));
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.only(
-                          top: 20, left: 40, right: 40, bottom: 20),
-                      child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(25),
-                            boxShadow: const [
-                              BoxShadow(
-                                color: Color.fromARGB(203, 158, 158, 158),
-                                offset: Offset(0.0, 0.0),
-                                blurRadius: 2.8,
-                                spreadRadius: 4,
-                              ),
-                            ],
-                            gradient: const LinearGradient(
-                              colors: [
-                                Color.fromARGB(234, 255, 255, 255),
-                                Color.fromARGB(255, 237, 237, 238)
-                              ],
-                              stops: [0.3, 0.75],
-                              begin: Alignment.bottomRight,
-                              end: Alignment.topLeft,
                             ),
                           ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
+                          child: const Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Padding(
-                                padding: const EdgeInsets.all(20),
-                                child: Image.asset('assets/cardImg/pdf.png',
-                                    width: 150),
+                                padding: EdgeInsets.all(15),
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      'Add PDF              ',
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 25,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    SizedBox(width: 10),
+                                    Icon(
+                                      Icons.add,
+                                      color: Colors.white,
+                                      size: 40,
+                                    ),
+                                    SizedBox(width: 10),
+                                  ],
+                                ),
                               ),
-                              Text(
-                                'Place PDF',
-                                style: GoogleFonts.audiowide(
-                                    fontSize: 30,
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w400),
-                                textAlign: TextAlign.right,
-                              ),
+                              Padding(
+                                padding: EdgeInsets.only(left: 15, top: 15),
+                                child: Text(
+                                  'Go beyond the surface:\n Create in-depth PDF ads that tell the\n whole story.',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontStyle: FontStyle.italic),
+                                ),
+                              )
                             ],
-                          )),
-                    ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                ),
+                )
               ],
             ),
           ),
@@ -404,22 +407,34 @@ class _AdBuilderState extends State<AdBuilder> with WidgetsBindingObserver {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Enter Password'),
+          backgroundColor: const Color.fromARGB(150, 13, 13, 13),
+          title: const Text(
+            'Enter Password',
+            style: TextStyle(color: Colors.white, fontFamily: 'Roboto'),
+          ),
           content: TextField(
+            decoration: InputDecoration(
+              hintStyle: TextStyle(color: Colors.grey[400]),
+              enabledBorder: const OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.white),
+              ),
+              hintText: 'Password',
+            ),
+            style: const TextStyle(color: Colors.white),
             onChanged: (value) {
               enteredPassword = value;
             },
             obscureText: true,
-            decoration: const InputDecoration(
-              hintText: 'Password',
-            ),
           ),
           actions: [
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop(false); // Close the dialog
               },
-              child: Text('Cancel'),
+              child: const Text(
+                'Cancel',
+                style: TextStyle(color: Colors.white, fontFamily: 'Roboto'),
+              ),
             ),
             TextButton(
               onPressed: () {
@@ -445,14 +460,23 @@ class _AdBuilderState extends State<AdBuilder> with WidgetsBindingObserver {
                     context: context,
                     builder: (BuildContext context) {
                       return AlertDialog(
-                        title: Text('Wrong Password'),
-                        content: Text('Please try again.'),
+                        backgroundColor: const Color.fromARGB(150, 13, 13, 13),
+                        title: const Text(
+                          'Wrong Password',
+                          style: TextStyle(
+                              color: Colors.white, fontFamily: 'Roboto'),
+                        ),
+                        content: const Text(
+                          'Please try again.',
+                          style: TextStyle(
+                              color: Colors.white, fontFamily: 'Roboto'),
+                        ),
                         actions: [
                           TextButton(
                             onPressed: () {
                               Navigator.of(context).pop();
                             },
-                            child: Text('OK'),
+                            child: const Text('OK'),
                           ),
                         ],
                       );
@@ -460,7 +484,10 @@ class _AdBuilderState extends State<AdBuilder> with WidgetsBindingObserver {
                   );
                 }
               },
-              child: Text('Unlock'),
+              child: const Text(
+                'Unlock',
+                style: TextStyle(color: Colors.white, fontFamily: 'Roboto'),
+              ),
             ),
           ],
         );

@@ -222,7 +222,7 @@ class _QueryModelState extends State<QueryModel> {
     final llmResponse = await chain.invoke(prompt);
 
     // print(prompt+":"+llmResponse);
-    print(prompt+":"+llmResponse);
+    print(prompt + ":" + llmResponse);
     await memory.saveContext(
       inputValues: {'input': prompt},
       outputValues: {'output': llmResponse},
@@ -261,32 +261,6 @@ class _QueryModelState extends State<QueryModel> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.grey.shade900,
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(10),
-              child: Image.asset(
-                'assets/Images/appBar.png',
-                fit: BoxFit.contain,
-                height: 35,
-              ),
-            ),
-            Container(
-                padding: const EdgeInsets.only(right: 90, left: 10),
-                child: Text('TeleMate',
-                    style: GoogleFonts.jost(
-                        fontSize: 20, fontWeight: FontWeight.bold)))
-          ],
-        ),
-        centerTitle: true,
-        titleTextStyle: const TextStyle(
-            color: Color.fromARGB(255, 254, 252, 252),
-            fontSize: 16,
-            fontWeight: FontWeight.bold),
-      ),
       body: Center(
         child: Column(
           children: <Widget>[

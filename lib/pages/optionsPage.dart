@@ -1,9 +1,13 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:gradient_borders/gradient_borders.dart';
+import './createQuery.dart';
 import './AdsPage.dart';
 
-class optionsPage extends StatelessWidget {
-  const optionsPage({super.key});
+// ignore: camel_case_types
+class OptionsPage extends StatelessWidget {
+  const OptionsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -12,148 +16,190 @@ class optionsPage extends StatelessWidget {
       body: Center(
         child: Column(
           children: [
-            Container(
-              alignment: Alignment.centerLeft,
-              child: ShaderMask(
-                shaderCallback: (bounds) {
-                  return const LinearGradient(
-                    colors: [
-                      Color.fromRGBO(255, 255, 255, 0.5),
-                      Color.fromRGBO(255, 255, 255, 1),
-                      Color.fromRGBO(255, 255, 255, 0),
-                    ],
-                    begin: Alignment.centerLeft,
-                    end: Alignment.centerRight,
-                  ).createShader(bounds);
-                },
-                child: const Text(
-                  'Choose an Option              ',
-                  style: TextStyle(
-                    fontSize: 50.0,
-                    fontWeight: FontWeight.bold,
-                    fontFamily: 'Roboto',
-                    color: Colors.white,
+            Padding(
+              padding: const EdgeInsets.only(top: 100, left: 50),
+              child: Container(
+                alignment: Alignment.centerLeft,
+                child: ShaderMask(
+                  shaderCallback: (bounds) {
+                    return const LinearGradient(
+                      colors: [
+                        Color.fromRGBO(255, 255, 255, 0.656),
+                        Color.fromRGBO(255, 255, 255, 1),
+                        Color.fromRGBO(255, 255, 255, 0.437),
+                      ],
+                      begin: Alignment.centerLeft,
+                      end: Alignment.centerRight,
+                    ).createShader(bounds);
+                  },
+                  child: const Text(
+                    'Choose an Option              ',
+                    style: TextStyle(
+                      fontSize: 50.0,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'Roboto',
+                      color: Colors.white,
+                    ),
                   ),
                 ),
               ),
             ),
-            const SizedBox(height: 50),
+            const SizedBox(height: 40),
             GestureDetector(
               onTap: () {
                 Navigator.of(context)
                     .push(MaterialPageRoute(builder: (_) => const AdBuilder()));
               },
-              child: Container(
-                color: const Color.fromRGBO(43, 43, 43, 100),
-                child: Row(
-                  children: [
-                    Container(
-                      alignment: Alignment.topLeft,
-                      width: 100,
-                      decoration: BoxDecoration(
-                          border: const GradientBoxBorder(
-                            gradient: LinearGradient(
-                              colors: [
-                                Color.fromRGBO(13, 9, 255, 100),
-                                Color.fromRGBO(229, 74, 74, 65),
-                                Color.fromRGBO(246, 246, 246, 100)
-                              ],
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight,
+              child: Padding(
+                padding: const EdgeInsets.only(left: 50, right: 50),
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(30),
+                    color: const Color.fromARGB(255, 43, 43, 43),
+                  ),
+                  child: Row(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(25),
+                        child: Container(
+                          alignment: Alignment.topLeft,
+                          height: 75,
+                          width: 75,
+                          decoration: BoxDecoration(
+                            border: const GradientBoxBorder(
+                              gradient: LinearGradient(
+                                colors: [
+                                  Color.fromRGBO(13, 9, 255, 100),
+                                  Color.fromRGBO(229, 74, 74, 65),
+                                  Color.fromRGBO(246, 246, 246, 100)
+                                ],
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                              ),
+                              width: 4,
                             ),
-                            width: 4,
+                            borderRadius: BorderRadius.circular(16),
                           ),
-                          borderRadius: BorderRadius.circular(16)),
-                      child: Image.asset('assets/cardImg/ads.png'),
-                    ),
-                    const Column(
-                      children: [
-                        Text(
-                          'Create Your Advertisement',
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontFamily: 'Roboto',
-                              fontSize: 20),
+                          child: Image.asset(
+                            'assets/cardImg/ads.png',
+                            height: 75,
+                            width: 75,
+                          ),
                         ),
-                        Text(
-                          ' Create your personalized advertisement and showcase \n using our robot.',
-                          style: TextStyle(
-                            color: Colors.white,
-                          ),
-                        )
-                      ],
-                    ),
-                    Container(
-                      child: Icon(
-                        Icons.arrow_forward_ios_rounded,
-                        color: Colors.white,
-                        size: 40,
                       ),
-                    ),
-                  ],
+                      const Column(
+                        children: [
+                          Text(
+                            'Create Your Advertisement                         ',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontFamily: 'Roboto',
+                                fontSize: 20),
+                          ),
+                          SizedBox(height: 10),
+                          Text(
+                            ' Create your personalized advertisement and showcase \n using our robot',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 15,
+                              fontStyle: FontStyle.italic,
+                            ),
+                          )
+                        ],
+                      ),
+                      const Padding(
+                        padding: EdgeInsets.only(left: 55, right: 5),
+                        child: Icon(
+                          Icons.arrow_forward_ios_rounded,
+                          color: Colors.white,
+                          size: 35,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
-            const SizedBox(height: 50),
+            const SizedBox(height: 35),
             GestureDetector(
               onTap: () {
-                Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (_) => const AdBuilder()));
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (_) => const SurveyForm()));
               },
-              child: Container(
-                color: const Color.fromRGBO(43, 43, 43, 100),
-                child: Row(
-                  children: [
-                    Container(
-                      alignment: Alignment.topLeft,
-                      width: 100,
-                      decoration: BoxDecoration(
-                          border: const GradientBoxBorder(
-                            gradient: LinearGradient(
-                              colors: [
-                                Color.fromRGBO(13, 9, 255, 100),
-                                Color.fromRGBO(229, 74, 74, 65),
-                                Color.fromRGBO(246, 246, 246, 100)
-                              ],
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight,
-                            ),
-                            width: 4,
-                          ),
-                          borderRadius: BorderRadius.circular(16)),
-                      child: Image.asset('assets/cardImg/survey.png'),
-                    ),
-                    const Column(
-                      children: [
-                        Text(
-                          'Create Your Survey',
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontFamily: 'Roboto',
-                              fontSize: 20),
-                        ),
-                        Text(
-                          ' Create a survey with personalized questions and get feedback\n from the audience. ',
-                          style: TextStyle(
-                            color: Colors.white,
+              child: Padding(
+                padding: const EdgeInsets.only(left: 50, right: 50),
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(30),
+                    color: const Color.fromARGB(255, 43, 43, 43),
+                  ),
+                  child: Row(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(25),
+                        child: Container(
+                          alignment: Alignment.topLeft,
+                          width: 75,
+                          height: 75,
+                          decoration: BoxDecoration(
+                              border: const GradientBoxBorder(
+                                gradient: LinearGradient(
+                                  colors: [
+                                    Color.fromRGBO(13, 9, 255, 100),
+                                    Color.fromRGBO(229, 74, 74, 65),
+                                    Color.fromRGBO(246, 246, 246, 100)
+                                  ],
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
+                                ),
+                                width: 4,
+                              ),
+                              borderRadius: BorderRadius.circular(16)),
+                          child: Image.asset(
+                            'assets/cardImg/survey.png',
+                            height: 75,
+                            width: 75,
                           ),
                         ),
-                      ],
-                    ),
-                    Container(
-                      child: Icon(
-                        Icons.arrow_forward_ios_rounded,
-                        color: Colors.white,
-                        size: 40,
                       ),
-                    ),
-                  ],
+                      const Column(
+                        children: [
+                          Text(
+                            'Create Your Survey                             ',
+                            textAlign: TextAlign.start,
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontFamily: 'Roboto',
+                                fontSize: 20),
+                          ),
+                          SizedBox(height: 10),
+                          Text(
+                            ' Create a survey with personalized questions and\n get feedback from the audience',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 15,
+                              fontStyle: FontStyle.italic,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const Padding(
+                        padding: EdgeInsets.only(left: 100, right: 10),
+                        child: Icon(
+                          Icons.arrow_forward_ios_rounded,
+                          color: Colors.white,
+                          size: 35,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
           ],
         ),
-        
       ),
     );
   }

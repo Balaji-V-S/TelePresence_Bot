@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:animated_splash_screen/animated_splash_screen.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:lottie/lottie.dart';
 import './welcomepage.dart';
 
@@ -9,18 +10,10 @@ class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AnimatedSplashScreen(
+      backgroundColor: const Color.fromARGB(1, 13, 13, 13),
       splashIconSize: MediaQuery.of(context).size.height,
       splash: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [
-              Colors.white.withOpacity(.6),
-              Colors.white.withOpacity(.4)
-            ],
-          ),
-        ),
+        color: const Color.fromARGB(1, 13, 13, 13),
         child: SizedBox(
           height: MediaQuery.of(context).size.height * 0.2,
           child: Column(
@@ -30,9 +23,10 @@ class SplashScreen extends StatelessWidget {
                 height: MediaQuery.of(context).size.height * 0.2,
               ),
               SizedBox(
-                height: 300,
-                width: 300,
-                child: Lottie.asset('assets/animations/droid.json'),
+                child: Lottie.asset(
+                  'assets/animations/droid.json',
+                ),
+                width: 350,
               ),
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.1,
@@ -41,33 +35,30 @@ class SplashScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
+                  Image.asset('assets/Images/incLogo.png',width:100),
+                  SizedBox(height: 20,),
                   const Text(
-                    'from',
-                    style: TextStyle(
-                      fontSize: 18, 
-                      color: Colors.black,
-                    ),
+                    "Sri Sairam",
+                    style: TextStyle(fontSize: 10, color: Colors.white,fontStyle: FontStyle.italic),
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SizedBox(
-                        height: 60,
-                      
-                        child: Image.asset(
-                          'assets/Images/incubationlogo.png',
-                        ),
-                      ),
-                    ],
+                  const Text(
+                    "TECHNO INCUBATION",
+                    style: TextStyle(fontSize: 25, color: Colors.white),
                   ),
+                  const Text(
+                    "FOUNDATION",
+                    style: TextStyle(fontSize: 20, color: Colors.white),
+                  ),
+
                 ],
               ),
             ],
           ),
         ),
       ),
-      nextScreen:const WelcomePage(),
+      nextScreen: const WelcomePage(),
       splashTransition: SplashTransition.fadeTransition,
+      pageTransitionType: PageTransitionType.rightToLeftWithFade,
     );
   }
 }
