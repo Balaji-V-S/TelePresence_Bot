@@ -203,7 +203,7 @@ class _QueryModelState extends State<QueryModel> {
 
   void _stopListening() async {
     await _speechToText.stop();
-    setState(() {});
+    setState(() {});  
     _callLLM(_wordsSpoken);
   }
 
@@ -261,6 +261,7 @@ class _QueryModelState extends State<QueryModel> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color.fromARGB(1, 13, 13, 13),
       body: Center(
         child: Column(
           children: <Widget>[
@@ -297,7 +298,7 @@ class _QueryModelState extends State<QueryModel> {
                 ? LottieBuilder.asset('assets/animations/micInitialized.json')
                 : const Padding(
                     padding: EdgeInsets.only(bottom: 15),
-                    child: Text("Not Initialised"),
+                    child: Text("Not Initialised",style: TextStyle(color: Colors.white),),
                   ),
             Expanded(
               child: Container(

@@ -1,5 +1,6 @@
 import 'dart:ffi';
 import 'dart:io';
+import 'package:lmes/Services/alan_ai.dart';
 import 'AdsPage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -51,7 +52,7 @@ class MenuPage extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(height: 50),
+            const SizedBox(height: 70),
             Container(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -131,7 +132,7 @@ class MenuPage extends StatelessWidget {
                         ),
                         onTap: () {
                           Navigator.of(context).push(MaterialPageRoute(
-                              builder: (_) => const QueryModel()));
+                              builder: (_) => const AlanAI()));
                         },
                       ),
                     ),

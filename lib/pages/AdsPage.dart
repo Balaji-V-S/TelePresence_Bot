@@ -250,7 +250,7 @@ class _AdBuilderState extends State<AdBuilder> with WidgetsBindingObserver {
                                         color: Colors.white,
                                         fontStyle: FontStyle.italic),
                                   ),
-                                )
+                                ),
                               ],
                             ),
                           ),
