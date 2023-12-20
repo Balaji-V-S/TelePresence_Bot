@@ -132,7 +132,7 @@ class MenuPage extends StatelessWidget {
                         ),
                         onTap: () {
                           Navigator.of(context).push(MaterialPageRoute(
-                              builder: (_) => const AlanAI()));
+                              builder: (_) => const QueryModel()));
                         },
                       ),
                     ),
