@@ -1,9 +1,6 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:gradient_borders/gradient_borders.dart';
 import './SurveyOptions.dart';
-import 'createSurvey.dart';
 import './AdsPage.dart';
 
 // ignore: camel_case_types

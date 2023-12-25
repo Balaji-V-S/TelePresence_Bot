@@ -1,10 +1,6 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:gradient_borders/gradient_borders.dart';
-import 'createSurvey.dart';
-import 'createSurvey.dart';
-import './AdsPage.dart';
+import 'CreateSurvey.dart';
 
 // ignore: camel_case_types
 class SurveyOptions extends StatelessWidget {

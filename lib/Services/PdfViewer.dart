@@ -88,7 +88,7 @@ class _PdfViewerState extends State<PdfViewer> with WidgetsBindingObserver {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text("Total Pages: ${totalPageCount}"),
+            Text("Total Pages: $totalPageCount"),
             IconButton(
               onPressed: () {
                 pdfControllerPinch.previousPage(
@@ -102,7 +102,7 @@ class _PdfViewerState extends State<PdfViewer> with WidgetsBindingObserver {
                 Icons.arrow_back,
               ),
             ),
-            Text("Current Page: ${currentPage}"),
+            Text("Current Page: $currentPage"),
             IconButton(
               onPressed: () {
                 pdfControllerPinch.nextPage(

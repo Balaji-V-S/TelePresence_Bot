@@ -9,7 +9,8 @@ class SurveyForm extends StatefulWidget {
 
 class _SurveyFormState extends State<SurveyForm> {
   int currentStep = 0;
-  String _value = ' ';
+  // ignore: unused_field
+  String _value = '';
   void _onchanged(String value) {
     setState(() {
       _value = value;

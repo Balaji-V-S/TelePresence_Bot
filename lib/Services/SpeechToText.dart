@@ -12,7 +12,7 @@ import 'package:avatar_glow/avatar_glow.dart';
 const gptKey = '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';
 final llm = OpenAI(apiKey: gptKey);
 final model =
-    ChatOpenAI(apiKey: gptKey, temperature: 0.5, model: 'gpt-3.5-turbo-1106');
+    ChatOpenAI(apiKey: gptKey, temperature: 0.5, model: 'gpt-3.5-turbo-1106',maxTokens: 128);
 const stringOutputParser = StringOutputParser();
 final memory = ConversationBufferMemory(returnMessages: true);
 
@@ -97,7 +97,7 @@ class _QueryModelState extends State<QueryModel> {
   }
 
   Future<void> _callLLM(prompt) async {
-    prompt = 'Hello';
+    prompt ='GPT 3.6 turbo 1106 vs davinci for conversational data?';
     print("reached function call");
     setState(() {
       lottiePath = "assets/animations/loading.json";

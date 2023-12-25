@@ -8,7 +8,7 @@ class LottieShadow extends StatelessWidget {
   final double blurRadius;
 
   const LottieShadow({
-    required this.child,
+    required this.child,super.key,
     this.shadowColor = Colors.grey,
     this.offsetX = 5.0,
     this.offsetY = 5.0,
@@ -28,7 +28,7 @@ class LottieShadow extends StatelessWidget {
               boxShadow: [
                 BoxShadow(
                   color: shadowColor.withOpacity(0.5),
-                  offset: Offset(0.0, 0.0),
+                  offset: const Offset(0.0, 0.0),
                   blurRadius: blurRadius,
                 ),
               ],
