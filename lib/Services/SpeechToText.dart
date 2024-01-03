@@ -80,7 +80,7 @@ class _QueryModelState extends State<QueryModel> {
     initTTS(); // to initialize the tts service : )
   }
 
-  void dispose()async{
+  void dispose() async {
     super.dispose();
     await _porcupineManager.delete();
   }
@@ -94,13 +94,11 @@ class _QueryModelState extends State<QueryModel> {
     return permissionGranted;
   }
 
-  String keywordAsset = "assets/keyword.ppn";
-
   late PorcupineManager _porcupineManager;
   void createPorcupineManager() async {
     try {
-      _porcupineManager = await PorcupineManager.fromKeywordPaths(
-          accessKey, ["assets/keyword.ppn"], _wakeWordCallback,sensitivities: [1.0,1.0]);
+      _porcupineManager = await PorcupineManager.fromKeywordPaths(accessKey,
+          ["assets/keyword.ppn", "assets/stop.ppn"], _wakeWordCallback,sensitivities: [1.0,1.0]);
 
       _porcupineManager.start();
     } on PorcupineException catch (err) {
@@ -111,19 +109,23 @@ class _QueryModelState extends State<QueryModel> {
 
   void _wakeWordCallback(int keywordIndex) {
     if (keywordIndex == 0) {
-      // "Picovoice" wake word detected
+      // "Hey Buddy" wake word detected
       // Do something
       print('Detected : )');
+      initSpeech();
+      _porcupineManager.stop();
     } else if (keywordIndex == 1) {
-      // "Porcupine" wake word detected
+      // "Hey Stop" wake word detected
       // Do something else
-      print('Detected : (');
+      print('Speech Stopped : (');
+      flutterTts.stop();
     }
   }
 
   void initSpeech() async {
     _speechEnabled = await _speechToText.initialize();
     setState(() {});
+    _startListening();
   }
 
   void _startListening() async {
@@ -178,6 +180,7 @@ class _QueryModelState extends State<QueryModel> {
   }
 
   Future<dynamic> play(response) async {
+    _porcupineManager.start();
     setState(() {
       lottiePath = "assets/animations/got_idea.gif";
     });
