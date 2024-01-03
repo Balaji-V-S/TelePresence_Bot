@@ -6,13 +6,21 @@ import 'package:speech_to_text/speech_to_text.dart';
 import 'package:langchain/langchain.dart';
 import 'package:langchain_openai/langchain_openai.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:porcupine_flutter/porcupine.dart';
+import 'package:porcupine_flutter/porcupine_error.dart';
+import 'package:porcupine_flutter/porcupine_manager.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:avatar_glow/avatar_glow.dart';
 
-const gptKey = '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';
+const gptKey = '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';
+const accessKey = "L2o8eihvj5utq7o0fX2kA4MInDKyADFDT3obnGKklocwvCJ1Y+9OoQ==";
 final llm = OpenAI(apiKey: gptKey);
-final model =
-    ChatOpenAI(apiKey: gptKey, temperature: 0.5, model: 'gpt-3.5-turbo-1106',maxTokens: 128);
+final model = ChatOpenAI(
+    apiKey: gptKey,
+    temperature: 0.5,
+    model: 'ft:gpt-3.5-turbo-1106:personal::8bU5NMQ7',
+    maxTokens: 128);
 const stringOutputParser = StringOutputParser();
 final memory = ConversationBufferMemory(returnMessages: true);
 
@@ -53,7 +61,7 @@ class _QueryModelState extends State<QueryModel> {
   String _wordsSpoken = "";
   String llmResponse = "";
   double _confidenceLevel = 0;
-  String lottiePath = "assets/animations/droid.json";
+  String lottiePath = "assets/animations/sleep_mode.gif";
 
   FlutterTts flutterTts = FlutterTts();
 
@@ -67,8 +75,50 @@ class _QueryModelState extends State<QueryModel> {
         correctPassword = prefs.getString('password')!;
       });
     });
-    initSpeech();
-    initTTS();
+    _checkAudioPermission();
+    createPorcupineManager();
+    initTTS(); // to initialize the tts service : )
+  }
+
+  void dispose()async{
+    super.dispose();
+    await _porcupineManager.delete();
+  }
+
+  Future<bool> _checkAudioPermission() async {
+    bool permissionGranted = await Permission.microphone.isGranted;
+    if (!permissionGranted) {
+      await Permission.microphone.request();
+    }
+    permissionGranted = await Permission.microphone.isGranted;
+    return permissionGranted;
+  }
+
+  String keywordAsset = "assets/keyword.ppn";
+
+  late PorcupineManager _porcupineManager;
+  void createPorcupineManager() async {
+    try {
+      _porcupineManager = await PorcupineManager.fromKeywordPaths(
+          accessKey, ["assets/keyword.ppn"], _wakeWordCallback,sensitivities: [1.0,1.0]);
+
+      _porcupineManager.start();
+    } on PorcupineException catch (err) {
+      // handle porcupine init error
+      print(err);
+    }
+  }
+
+  void _wakeWordCallback(int keywordIndex) {
+    if (keywordIndex == 0) {
+      // "Picovoice" wake word detected
+      // Do something
+      print('Detected : )');
+    } else if (keywordIndex == 1) {
+      // "Porcupine" wake word detected
+      // Do something else
+      print('Detected : (');
+    }
   }
 
   void initSpeech() async {
@@ -80,27 +130,28 @@ class _QueryModelState extends State<QueryModel> {
     await _speechToText.listen(onResult: _onSpeechResult);
     setState(() {
       _confidenceLevel = 0;
+      lottiePath = "assets/animations/hello.gif";
     });
   }
 
   void _stopListening() async {
     await _speechToText.stop();
     setState(() {});
-    _callLLM(_wordsSpoken);
   }
 
   void _onSpeechResult(result) {
+    print('Result Generated');
     setState(() {
       _wordsSpoken = "${result.recognizedWords}";
       _confidenceLevel = result.confidence;
     });
+    _callLLM(_wordsSpoken);
   }
 
   Future<void> _callLLM(prompt) async {
-    prompt ='GPT 3.6 turbo 1106 vs davinci for conversational data?';
     print("reached function call");
     setState(() {
-      lottiePath = "assets/animations/loading.json";
+      lottiePath = "assets/animations/thinking.gif";
     });
     final llmResponse = await chain.invoke(prompt);
     print(prompt + ":" + llmResponse);
@@ -121,14 +172,14 @@ class _QueryModelState extends State<QueryModel> {
     flutterTts.setCompletionHandler(() {
       setState(() {
         // print("Speech completed");
-        lottiePath = "assets/animations/droid.json";
+        lottiePath = "assets/animations/sleep_mode.gif";
       });
     });
   }
 
   Future<dynamic> play(response) async {
     setState(() {
-      lottiePath = "assets/animations/speaking.json";
+      lottiePath = "assets/animations/got_idea.gif";
     });
     await flutterTts.speak(response);
   }
@@ -136,7 +187,7 @@ class _QueryModelState extends State<QueryModel> {
   void stop() async {
     await flutterTts.stop();
     setState(() {
-      lottiePath = "assets/animations/droid.json";
+      lottiePath = "assets/animations/sleep_mode.gif";
     });
   }
 
@@ -152,8 +203,8 @@ class _QueryModelState extends State<QueryModel> {
           child: Column(
             children: <Widget>[
               Padding(
-                padding: const EdgeInsets.all(30),
-                child: Lottie.asset(lottiePath, height: 375),
+                padding: const EdgeInsets.only(top: 100),
+                child: Image.asset(lottiePath, scale: 0.4),
               ),
               GestureDetector(
                 onTap: _speechToText.isListening
@@ -218,38 +269,41 @@ class _QueryModelState extends State<QueryModel> {
             ],
           ),
         ),
-        floatingActionButton: FloatingActionButton.large(
-          backgroundColor: Colors.white,
-          elevation: 50,
-          onPressed: () {
-            if (isLocked) {
-              _showPasswordDialog(context);
-            } else {
-              setState(() {
-                isLocked = !isLocked;
-              });
-              Fluttertoast.showToast(
-                msg: "Screen Locked",
-                toastLength: Toast.LENGTH_SHORT,
-                gravity: ToastGravity.CENTER,
-                timeInSecForIosWeb: 1,
-                backgroundColor: const Color.fromARGB(144, 255, 255, 255),
-                textColor: Colors.black,
-                fontSize: 16.0,
-              );
-            }
-          },
-          child: isLocked
-              ? const Icon(
-                  Icons.lock_outline,
-                  color: Colors.black,
-                  size: 40,
-                )
-              : const Icon(
-                  Icons.lock_open,
-                  color: Colors.black,
-                  size: 40,
-                ),
+        floatingActionButton: Padding(
+          padding: const EdgeInsets.only(right: 15, bottom: 20),
+          child: FloatingActionButton(
+            backgroundColor: Colors.white,
+            elevation: 50,
+            onPressed: () {
+              if (isLocked) {
+                _showPasswordDialog(context);
+              } else {
+                setState(() {
+                  isLocked = !isLocked;
+                });
+                Fluttertoast.showToast(
+                  msg: "Screen Locked",
+                  toastLength: Toast.LENGTH_SHORT,
+                  gravity: ToastGravity.CENTER,
+                  timeInSecForIosWeb: 1,
+                  backgroundColor: const Color.fromARGB(144, 255, 255, 255),
+                  textColor: Colors.black,
+                  fontSize: 16.0,
+                );
+              }
+            },
+            child: isLocked
+                ? const Icon(
+                    Icons.lock_outline,
+                    color: Colors.black,
+                    size: 40,
+                  )
+                : const Icon(
+                    Icons.lock_open,
+                    color: Colors.black,
+                    size: 40,
+                  ),
+          ),
         ),
       ),
     );

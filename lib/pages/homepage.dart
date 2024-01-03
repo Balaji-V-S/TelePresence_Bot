@@ -19,11 +19,7 @@ class MenuPage extends StatelessWidget {
           children: [
             Padding(
               padding: const EdgeInsets.only(top: 100),
-              child: LottieShadow(
-                shadowColor: const Color.fromRGBO(123, 97, 255, 0.5),
-                child:
-                    Lottie.asset('assets/animations/droid.json', height: 350),
-              ),
+              child: Image.asset("assets/animations/hello.gif", scale:0.5),
             ),
             ShaderMask(
               shaderCallback: (bounds) {
@@ -226,21 +222,25 @@ class MenuPage extends StatelessWidget {
         builder: (BuildContext context) {
           return AlertDialog(
             backgroundColor: const Color.fromARGB(150, 13, 13, 13),
-            title: const Text("Really?",style: TextStyle(color: Colors.white),),
-            content: const Text("Do you want to exit the App?",style: TextStyle(color: Colors.white)),
+            title: const Text(
+              "Really?",
+              style: TextStyle(color: Colors.white),
+            ),
+            content: const Text("Do you want to exit the App?",
+                style: TextStyle(color: Colors.white)),
             actions: <Widget>[
               TextButton(
                 onPressed: () {
                   //Navigator.of(context).pop(true);
                   exit(0);
                 },
-                child: const Text("Yes",style: TextStyle(color: Colors.white)),
+                child: const Text("Yes", style: TextStyle(color: Colors.white)),
               ),
               TextButton(
                 onPressed: () {
                   Navigator.of(context).pop(false);
                 },
-                child: const Text("No",style: TextStyle(color: Colors.white)),
+                child: const Text("No", style: TextStyle(color: Colors.white)),
               )
             ],
           );
