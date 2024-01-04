@@ -23,8 +23,8 @@ class SplashScreen extends StatelessWidget {
                 height: MediaQuery.of(context).size.height * 0.2,
               ),
               SizedBox(
-                child: Lottie.asset(
-                  'assets/animations/droid.json',
+                child: Image.asset(
+                  'assets/animations/hello.gif',scale:0.6
                 ),
                 width: 350,
               ),

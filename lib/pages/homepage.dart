@@ -18,8 +18,10 @@ class MenuPage extends StatelessWidget {
             child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.only(top: 100),
-              child: Image.asset("assets/animations/hello.gif", scale:0.5),
+              padding: const EdgeInsets.only(top: 150),
+              child: Image.asset("assets/animations/hello.gif", scale:0.45
+              
+              ),
             ),
             ShaderMask(
               shaderCallback: (bounds) {

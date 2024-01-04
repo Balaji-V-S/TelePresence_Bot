@@ -60,7 +60,7 @@ class _VideoViewerState extends State<VideoViewer> with WidgetsBindingObserver {
                   ),
                 ],
               ),
-        floatingActionButton: FloatingActionButton.large(
+        floatingActionButton: FloatingActionButton(
           backgroundColor: Colors.white,
           elevation: 50,
           onPressed: () {

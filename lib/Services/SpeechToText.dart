@@ -18,15 +18,15 @@ const accessKey = "L2o8eihvj5utq7o0fX2kA4MInDKyADFDT3obnGKklocwvCJ1Y+9OoQ==";
 final llm = OpenAI(apiKey: gptKey);
 final model = ChatOpenAI(
     apiKey: gptKey,
-    temperature: 0.5,
-    model: 'ft:gpt-3.5-turbo-1106:personal::8bU5NMQ7',
+    temperature: 0.3,
+    model: 'ft:gpt-3.5-turbo-1106:personal::8dCIG1mW',
     maxTokens: 128);
 const stringOutputParser = StringOutputParser();
 final memory = ConversationBufferMemory(returnMessages: true);
 
 final promptTemplate = ChatPromptTemplate.fromPromptMessages([
   SystemChatMessagePromptTemplate.fromTemplate(
-    'SairamX is an informative chat bot specializing in Sairam Institutions. It delivers cool and informative responses',
+    'Sairam-X is an informative chat bot specializing in Sairam Institutions. It delivers cool and informative responses',
   ),
   const MessagesPlaceholder(variableName: 'history'),
   HumanChatMessagePromptTemplate.fromTemplate('{input}'),
@@ -98,7 +98,8 @@ class _QueryModelState extends State<QueryModel> {
   void createPorcupineManager() async {
     try {
       _porcupineManager = await PorcupineManager.fromKeywordPaths(accessKey,
-          ["assets/keyword.ppn", "assets/stop.ppn"], _wakeWordCallback,sensitivities: [1.0,1.0]);
+          ["assets/keyword.ppn", "assets/stop.ppn"], _wakeWordCallback,
+          sensitivities: [1.0, 1.0]);
 
       _porcupineManager.start();
     } on PorcupineException catch (err) {
@@ -151,6 +152,7 @@ class _QueryModelState extends State<QueryModel> {
   }
 
   Future<void> _callLLM(prompt) async {
+    _porcupineManager.start();
     print("reached function call");
     setState(() {
       lottiePath = "assets/animations/thinking.gif";
@@ -180,7 +182,6 @@ class _QueryModelState extends State<QueryModel> {
   }
 
   Future<dynamic> play(response) async {
-    _porcupineManager.start();
     setState(() {
       lottiePath = "assets/animations/got_idea.gif";
     });
@@ -207,7 +208,7 @@ class _QueryModelState extends State<QueryModel> {
             children: <Widget>[
               Padding(
                 padding: const EdgeInsets.only(top: 100),
-                child: Image.asset(lottiePath, scale: 0.4),
+                child: Image.asset(lottiePath, scale: 0.3),
               ),
               GestureDetector(
                 onTap: _speechToText.isListening
@@ -264,6 +265,7 @@ class _QueryModelState extends State<QueryModel> {
                   child: Text(
                     "Confidence: ${(_confidenceLevel * 100).toStringAsFixed(1)}%",
                     style: const TextStyle(
+                      color: Colors.white,
                       fontSize: 30,
                       fontWeight: FontWeight.w200,
                     ),

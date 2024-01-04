@@ -19,10 +19,10 @@ class _WelcomePageState extends State<WelcomePage> {
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.only(top: 125),
-              child: LottieBuilder.asset(
-                'assets/animations/droid.json',
-                width: 350,
+              padding: const EdgeInsets.only(top: 200),
+              child:Image.asset(
+                'assets/animations/hello.gif',
+                scale: 0.5,
               ),
             ),
             const SizedBox(height: 50),
