@@ -19,10 +19,10 @@ class _WelcomePageState extends State<WelcomePage> {
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.only(top: 200),
+              padding: const EdgeInsets.only(top: 250),
               child:Image.asset(
                 'assets/animations/hello.gif',
-                scale: 0.5,
+                scale: 0.6,
               ),
             ),
             const SizedBox(height: 50),
@@ -50,7 +50,7 @@ class _WelcomePageState extends State<WelcomePage> {
             ),
             const SizedBox(height: 5),
             Image.asset('assets/Images/saiinc.png', scale: 2.5),
-            const SizedBox(height: 120),
+            const SizedBox(height: 10),
             Container(
               decoration: BoxDecoration(
                   border: const GradientBoxBorder(

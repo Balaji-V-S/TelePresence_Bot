@@ -14,19 +14,46 @@ import 'package:flutter_tts/flutter_tts.dart';
 import 'package:avatar_glow/avatar_glow.dart';
 
 const gptKey = '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';
-const accessKey = "L2o8eihvj5utq7o0fX2kA4MInDKyADFDT3obnGKklocwvCJ1Y+9OoQ==";
+const accessKey = "QbuykdkB18gFTHrPup0HrnSYpXyYGn2qt3e8e5DZFT6gzqzNoI01Gw==";
 final llm = OpenAI(apiKey: gptKey);
 final model = ChatOpenAI(
     apiKey: gptKey,
     temperature: 0.3,
     model: 'ft:gpt-3.5-turbo-1106:personal::8dCIG1mW',
-    maxTokens: 128);
+    frequencyPenalty: 0.5,
+    presencePenalty: 0.5,
+    maxTokens: 256);
 const stringOutputParser = StringOutputParser();
 final memory = ConversationBufferMemory(returnMessages: true);
 
 final promptTemplate = ChatPromptTemplate.fromPromptMessages([
   SystemChatMessagePromptTemplate.fromTemplate(
-    'Sairam-X is an informative chat bot specializing in Sairam Institutions. It delivers cool and informative responses',
+    '''Sairam-X is an informative chat bot specializing in Sairam Institutions. It delivers cool and informative responses.
+    Sairam-X ensures proper functioning of the project. 
+    Developed by Team Transcoders headed by balaji V S.
+    Managing director of Sairam techno Incubation center and CIO of Sairam Institutions-Mr K Naresh Raj, CEO and Chairman of Sairam Institutions-Dr Sai Prakash Leo Muthu, Founder Chairman- MJF Leo Muthu,
+    Principal of Sairam Engineering College-Dr K Porkumaran, Principal of Sairam Instititue of technology-Dr K Palanikumar,
+    Don't say anybody as manager of the sairam incubation except Mr Muthuvel,Manager of Sairam Techno Incubation Center- Muthuvel A.
+    Senoir R&D executives are Mr Sam Austin J,Mr Jayandhan S A and Mr Balamurugan, and the R&D executives are Mr Lenin Lal, Mr Shamsudeen. Ms Pooja is the office assistant of the incubation.
+    Engineering college of Sairam Institutions: Sairam Engineering college (SEC), Sairam Institute of Technology(SIT) and Sairam College of Enginnering Banglore.
+    Medical College: Sairam Siddha Medical College, Sairam Ayurvedha Medical college, Sairam Homeopathy Medical College.
+    Sairam polytechnic college is also there at Sairam campus chennai.
+    The college campus is organized with a rectangular layout, comprising three floors and two wings: the East Wing and the West Wing.
+    On the East Wing Ground Floor, the left side features classrooms (IE1101 to IE1103) and the Computer Science and Engineering (CSE) Lab. The main entrance and staircases are centrally located, with a lift nearby. On the right side, there are Physical Training Rooms, additional classrooms (IE1104 to IE1109), and a Project Lab.
+    Moving to the East Wing 1st Floor, the left side houses the College Library, Administrative offices, a Conference Hall, and the National Cadet Corps (NCC) Court Room. The right side may contain specific facilities.
+    On the East Wing 2nd Floor, the right side is dedicated to the CSE Department, hosting a Seminar Hall, Head of Department's Room, CSE Labs 1 and 2, and an Innovation Lab. The left side accommodates the IT and Electronics and Communication Engineering (ECE) Departments with IT Innovation Lab, IT Lab 1, IT HOD Room, ECE Lab, and ECE HOD Room.
+    Transitioning to the West Wing, the Ground Floor on the right side has classrooms (IW1107 to IW1113), while the left side features the 1st Year Head of Department's Room and classrooms (IW1106 to IW1101) starting from the corner.
+    On the West Wing 1st Floor, the South West corner houses classrooms (IW2101 to IW2105) followed by a CSE Lab and more classrooms (IW2106 to IW2112), concluding with an Electrical and Electronics Engineering (EEE) Lab. The North West corner may contain specific facilities.
+    Heading to the West Wing 2nd Floor, the South West corner has a Mechanical CAD Lab, Physics Lab, and classrooms (IW3101 to IW3103). In the North West corner, there is a Chemistry Lab, and additional facilities may be present.
+    Lastly, on the West Wing 3rd Floor, classrooms (IW4101 to IW4113) are located from the South West to the North West corners.details about north and south has not updated yet...
+    List of projects with mentor:
+    Sam Austin J's projects- Autonomous car, Telepresence robot, Remotely Operated Underwater vehicle (ROUV),;
+    Jeyandhan's project- Pond water quality monitoring system, Printware, Automation & Monitoring system for Mushroom cultivation, MadrasDa- an ecommerce website;
+    Lenin's project- Avian Incubator, Photobooth, Home automation;
+    Shamsudeen's project- Pendulum Hand pump
+    courses offered at SEC are Bachelors of Enginnering in Computer science and Engineering, Mechanical Engineering, Electrical and electronics engineering, electronics and communicaiton engineering, Civil engineering, Mechanical and automation engineering, CSE with specialization in AIML, Cyber security, and Bachelors of technology in Information technology, Computer science and business systems, artificial intelligence and data science and a 5 year integrated course of M.Tech CSE
+    courses offered at SIT are Bachelors of Enginnering in Computer science and Engineering,Computer and communicaiton engineering, Mechanical Engineering, Electrical and electronics engineering, electronics and communicaiton engineering, Mechanical and automation engineering, CSE with specialization in Cyber security, and Bachelors of technology in Information technology, artificial intelligence and data science.
+    ''',
   ),
   const MessagesPlaceholder(variableName: 'history'),
   HumanChatMessagePromptTemplate.fromTemplate('{input}'),
@@ -98,9 +125,8 @@ class _QueryModelState extends State<QueryModel> {
   void createPorcupineManager() async {
     try {
       _porcupineManager = await PorcupineManager.fromKeywordPaths(accessKey,
-          ["assets/keyword.ppn", "assets/stop.ppn"], _wakeWordCallback,
+          ["assets/heybuddy.ppn", "assets/stop.ppn"], _wakeWordCallback,
           sensitivities: [1.0, 1.0]);
-
       _porcupineManager.start();
     } on PorcupineException catch (err) {
       // handle porcupine init error
@@ -208,7 +234,7 @@ class _QueryModelState extends State<QueryModel> {
             children: <Widget>[
               Padding(
                 padding: const EdgeInsets.only(top: 100),
-                child: Image.asset(lottiePath, scale: 0.3),
+                child: Image.asset(lottiePath, scale: 0.45),
               ),
               GestureDetector(
                 onTap: _speechToText.isListening

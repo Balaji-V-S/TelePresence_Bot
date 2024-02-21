@@ -85,8 +85,7 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - assets/keyword.ppn
-    - assets/stop.ppn
+    - assets/
     - assets/Images/
     - assets/Audios/
     - assets/animations/
