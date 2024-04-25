@@ -38,14 +38,6 @@ final promptTemplate = ChatPromptTemplate.fromPromptMessages([
     Engineering college of Sairam Institutions: Sairam Engineering college (SEC), Sairam Institute of Technology(SIT) and Sairam College of Enginnering Banglore.
     Medical College: Sairam Siddha Medical College, Sairam Ayurvedha Medical college, Sairam Homeopathy Medical College.
     Sairam polytechnic college is also there at Sairam campus chennai.
-    The college campus is organized with a rectangular layout, comprising three floors and two wings: the East Wing and the West Wing.
-    On the East Wing Ground Floor, the left side features classrooms (IE1101 to IE1103) and the Computer Science and Engineering (CSE) Lab. The main entrance and staircases are centrally located, with a lift nearby. On the right side, there are Physical Training Rooms, additional classrooms (IE1104 to IE1109), and a Project Lab.
-    Moving to the East Wing 1st Floor, the left side houses the College Library, Administrative offices, a Conference Hall, and the National Cadet Corps (NCC) Court Room. The right side may contain specific facilities.
-    On the East Wing 2nd Floor, the right side is dedicated to the CSE Department, hosting a Seminar Hall, Head of Department's Room, CSE Labs 1 and 2, and an Innovation Lab. The left side accommodates the IT and Electronics and Communication Engineering (ECE) Departments with IT Innovation Lab, IT Lab 1, IT HOD Room, ECE Lab, and ECE HOD Room.
-    Transitioning to the West Wing, the Ground Floor on the right side has classrooms (IW1107 to IW1113), while the left side features the 1st Year Head of Department's Room and classrooms (IW1106 to IW1101) starting from the corner.
-    On the West Wing 1st Floor, the South West corner houses classrooms (IW2101 to IW2105) followed by a CSE Lab and more classrooms (IW2106 to IW2112), concluding with an Electrical and Electronics Engineering (EEE) Lab. The North West corner may contain specific facilities.
-    Heading to the West Wing 2nd Floor, the South West corner has a Mechanical CAD Lab, Physics Lab, and classrooms (IW3101 to IW3103). In the North West corner, there is a Chemistry Lab, and additional facilities may be present.
-    Lastly, on the West Wing 3rd Floor, classrooms (IW4101 to IW4113) are located from the South West to the North West corners.details about north and south has not updated yet...
     List of projects with mentor:
     Sam Austin J's projects- Autonomous car, Telepresence robot, Remotely Operated Underwater vehicle (ROUV),;
     Jeyandhan's project- Pond water quality monitoring system, Printware, Automation & Monitoring system for Mushroom cultivation, MadrasDa- an ecommerce website;
@@ -125,8 +117,7 @@ class _QueryModelState extends State<QueryModel> {
   void createPorcupineManager() async {
     try {
       _porcupineManager = await PorcupineManager.fromKeywordPaths(accessKey,
-          ["assets/heybuddy.ppn", "assets/stop.ppn"], _wakeWordCallback,
-          sensitivities: [1.0, 1.0]);
+          ["assets/heybuddy.ppn"], _wakeWordCallback);
       _porcupineManager.start();
     } on PorcupineException catch (err) {
       // handle porcupine init error
@@ -141,11 +132,6 @@ class _QueryModelState extends State<QueryModel> {
       print('Detected : )');
       initSpeech();
       _porcupineManager.stop();
-    } else if (keywordIndex == 1) {
-      // "Hey Stop" wake word detected
-      // Do something else
-      print('Speech Stopped : (');
-      flutterTts.stop();
     }
   }
 
