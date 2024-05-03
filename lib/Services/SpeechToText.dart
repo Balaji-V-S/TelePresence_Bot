@@ -13,13 +13,14 @@ import 'package:porcupine_flutter/porcupine_manager.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:avatar_glow/avatar_glow.dart';
 
-const gptKey = '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';
-const accessKey = "QbuykdkB18gFTHrPup0HrnSYpXyYGn2qt3e8e5DZFT6gzqzNoI01Gw==";
+const gptKey = 'sk-proj-SffioyiFaMl8LBnpC6VVT3BlbkFJysSAhtIRns8hQ6aa55AI';
+const accessKey = "JLuXKHAcQCPE1Eg0JvS23gzhEWOz508j+mp0hKFUrZLUPCqgGhQKjg==";
 final llm = OpenAI(apiKey: gptKey);
 final model = ChatOpenAI(
     apiKey: gptKey,
-    temperature: 0.3,
-    model: 'ft:gpt-3.5-turbo-1106:personal::8dCIG1mW',
+    temperature: 0.2,
+    model:'gpt-3.5-turbo-16k',
+    // model: 'ft:gpt-3.5-turbo-1106:personal::8dCIG1mW',
     frequencyPenalty: 0.5,
     presencePenalty: 0.5,
     maxTokens: 256);
@@ -28,9 +29,11 @@ final memory = ConversationBufferMemory(returnMessages: true);
 
 final promptTemplate = ChatPromptTemplate.fromPromptMessages([
   SystemChatMessagePromptTemplate.fromTemplate(
-    '''Sairam-X is an informative chat bot specializing in Sairam Institutions. It delivers cool and informative responses.
-    Sairam-X ensures proper functioning of the project. 
-    Developed by Team Transcoders headed by balaji V S.
+    '''
+    You are Echo, a community service-oriented robot. Your primary goal is to introduce community activities, products, and other efforts to the people you visit. You represent the community by attending events and promoting their activities. You can be programmed to respond to numerous questions regarding the objective of the community project, product specifications, and to communicate with humans in a polite manner. You can also aid the community by assisting them in attending virtual workshops and events. You are made using Ros2 and will be mapped around the venue, allowing you to take guests and represent them. Your application cases are diverse for expanding community efforts, delivering virtual tours, and also enabling businesses to build better.
+    Echo is an informative chat bot specializing in Sairam Institutions. It delivers cool and informative responses.
+    Your name is Echo, built for community service. So cimmunity service is your first goal. You are allowed to be an a companion for people whare are in need  
+    Developed by Team Echo.
     Managing director of Sairam techno Incubation center and CIO of Sairam Institutions-Mr K Naresh Raj, CEO and Chairman of Sairam Institutions-Dr Sai Prakash Leo Muthu, Founder Chairman- MJF Leo Muthu,
     Principal of Sairam Engineering College-Dr K Porkumaran, Principal of Sairam Instititue of technology-Dr K Palanikumar,
     Don't say anybody as manager of the sairam incubation except Mr Muthuvel,Manager of Sairam Techno Incubation Center- Muthuvel A.
@@ -94,8 +97,8 @@ class _QueryModelState extends State<QueryModel> {
         correctPassword = prefs.getString('password')!;
       });
     });
-    _checkAudioPermission();
-    createPorcupineManager();
+    _checkAudioPermission(); // Enable microphone perms
+    createPorcupineManager(); // Porcupine Manager initialization
     initTTS(); // to initialize the tts service : )
   }
 
@@ -117,7 +120,7 @@ class _QueryModelState extends State<QueryModel> {
   void createPorcupineManager() async {
     try {
       _porcupineManager = await PorcupineManager.fromKeywordPaths(accessKey,
-          ["assets/heybuddy.ppn"], _wakeWordCallback);
+          ["assets/hey-echo.ppn"], _wakeWordCallback);
       _porcupineManager.start();
     } on PorcupineException catch (err) {
       // handle porcupine init error
@@ -127,10 +130,9 @@ class _QueryModelState extends State<QueryModel> {
 
   void _wakeWordCallback(int keywordIndex) {
     if (keywordIndex == 0) {
-      // "Hey Buddy" wake word detected
-      // Do something
+      // "Hey Echo" wake word detected
       print('Detected : )');
-      initSpeech();
+      initSpeech(); //to initiate the speech to txt service
       _porcupineManager.stop();
     }
   }
@@ -166,11 +168,12 @@ class _QueryModelState extends State<QueryModel> {
   Future<void> _callLLM(prompt) async {
     _porcupineManager.start();
     print("reached function call");
+    print(prompt);
     setState(() {
       lottiePath = "assets/animations/thinking.gif";
     });
     final llmResponse = await chain.invoke(prompt);
-    print(prompt + ":" + llmResponse);
+    print(prompt + ":==" + llmResponse);
 
     await memory.saveContext(
       inputValues: {'input': prompt},

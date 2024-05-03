@@ -22,6 +22,7 @@ Future <void>main()  async {
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);       
   runApp(
       MaterialApp(
+        debugShowCheckedModeBanner: false,
         builder: FToastBuilder(),
         home: const SplashScreen(),
         navigatorKey: navigatorKey,

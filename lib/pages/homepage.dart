@@ -94,7 +94,7 @@ class MenuPage extends StatelessWidget {
                               child: Container(
                                 alignment: Alignment.centerLeft,
                                 child: const Text(
-                                  'Sairam-X',
+                                  'Echo',
                                   textAlign: TextAlign.left,
                                   style: TextStyle(
                                       color: Colors.white,
