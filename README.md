@@ -1,16 +1,74 @@
-# telemate
+# 🤖 Telepresence Bot Interface
 
-A new Flutter project.
+A **Flutter-based interface** for a telepresence robot that functions as:
+- 💬 A GPT-3.5 Turbo-powered assistant for answering organizational queries and navigation help.
+- 📢 An advertising bot to display promotional content, announcements, or updates.
 
-## Getting Started
+## 🚀 Features
 
-This project is a starting point for a Flutter application.
+- ✨ Beautiful and responsive Flutter UI for kiosks, tablets, or embedded screens
+- 🧠 OpenAI GPT-3.5 Turbo integration for dynamic conversations
+- 📺 Dual-purpose interface: Advertising + Intelligent Assistant
+- 🔌 Modular code structure for easy hardware integration
+- 🏢 Designed for office, event, or campus environments
 
-A few resources to get you started if this is your first Flutter project:
+## 🛠️ Tech Stack
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+| Layer       | Tech                           |
+|-------------|-------------------------------|
+| UI          | Flutter                       |
+| LLM Backend | OpenAI GPT-3.5 Turbo (API)    |
+| Platform    | Android tablet / Jetson Nano / Raspberry Pi / Kiosk |
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## 📦 Installation
+
+1. **Clone the repo:**
+    ```
+    git clone https://github.com/your-username/telepresence-bot-interface.git
+    cd telepresence-bot-interface
+    ```
+
+2. **Install dependencies:**
+    ```
+    flutter pub get
+    ```
+
+3. **Add your OpenAI API key:**
+
+    Create a `.env` file or secure your key using environment variables:
+    ```
+    OPENAI_API_KEY=your_openai_api_key
+    ```
+
+4. **Run the app:**
+    ```
+    flutter run
+    ```
+
+## 🎯 Use Cases
+
+- Lobby or reception assistant
+- Event or booth concierge
+- In-office navigation bot
+- Digital signage with interaction
+
+## 🔒 Environment Setup
+
+Add your API key in a `.env` file:
+
+## 🙌 Contributing
+
+Pull requests are welcome! For major changes, please open an issue first to discuss what you'd like to change.
+
+## 📄 License
+
+MIT
+
+## 💻 Author
+
+Built with 💙 by @Balaji-V-S
+
+> **Let me know if:**
+> - You want to add hardware specs (camera, wheels, sensors)
+> - You want deployment instructions for Raspberry Pi/Jetson
+> - Or if you're integrating voice/video, I’ll add those too
