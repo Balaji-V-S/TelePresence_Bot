@@ -13,8 +13,8 @@ import 'package:porcupine_flutter/porcupine_manager.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:avatar_glow/avatar_glow.dart';
 
-const gptKey = 'sk-proj-SffioyiFaMl8LBnpC6VVT3BlbkFJysSAhtIRns8hQ6aa55AI';
-const accessKey = "JLuXKHAcQCPE1Eg0JvS23gzhEWOz508j+mp0hKFUrZLUPCqgGhQKjg==";
+const gptKey = 'YOUR+GPT+KEY';
+const accessKey = "YOUT_ACCESS_KEY";
 final llm = OpenAI(apiKey: gptKey);
 final model = ChatOpenAI(
     apiKey: gptKey,
